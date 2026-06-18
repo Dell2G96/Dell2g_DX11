@@ -159,6 +159,8 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Renders\Color.cpp" />
+    <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Window.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -238,7 +240,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Framework.h" />
+    <ClInclude Include="Renders\Color.h" />
+    <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

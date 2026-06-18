@@ -5,10 +5,19 @@ CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InI
     :AppName(InAppName) , Width(InWitdh), Height(InHeight), Instance(InInstance)
 {
     CreateHandle();
+ 
+    CD3D::Create
+    (
+        Handle, // InHandle: DirectX 11이 렌더링 결과를 출력할 Win32 창 핸들(HWND)입니다. 스왑 체인의 OutputWindow로 사용되며, 반드시 유효한 창 핸들이어야 합니다.
+        Width,  // InWidth: 백 버퍼와 뷰포트의 가로 크기입니다. 현재 창의 가로 크기를 넘기며, 전체 화면이나 리사이즈를 지원할 때는 변경된 크기를 다시 반영해야 합니다.
+        Height  // InHeight: 백 버퍼와 뷰포트의 세로 크기입니다. 현재 창의 세로 크기를 넘기며, 전체 화면이나 리사이즈를 지원할 때는 변경된 크기를 다시 반영해야 합니다.
+    );
 }
 
 CWindow::~CWindow()
 {
+    CD3D::Destroy();
+    
     DestroyWindow(Handle);
     UnregisterClass(AppName.c_str(), Instance);
 }
@@ -28,6 +37,12 @@ WPARAM CWindow::Run()
         else
         {
             // 게임 렌더링 처리
+            CD3D::Get()->ClearRenderTargetView();           //렌더 타겟을 지울 색상입니다.
+            {
+                
+            }
+            CD3D::Get()->Present();                         // Present(): Window.cpp에서는 매개변수가 없는 CD3D 래퍼 함수입니다.
+            
         }
     }
     return WPARAM();
@@ -46,7 +61,9 @@ void CWindow::CreateHandle()
         wndClass.hbrBackground = (HBRUSH)(COLOR_GRAYTEXT + 1);
         wndClass.lpszClassName = AppName.c_str();
         wndClass.hInstance = Instance;
+        
         wndClass.lpfnWndProc = WNDPROC;
+        
         ATOM check = RegisterClassEx(&wndClass);
         assert(check != 0);
     }

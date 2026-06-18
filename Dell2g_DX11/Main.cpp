@@ -1,4 +1,5 @@
 #include "Framework.h"
+#include "Systems/Window.h"
 
 int WINAPI WinMain(HINSTANCE InInstance, HINSTANCE InPreInstance, LPSTR InParam, int InCommand)
 {
@@ -6,8 +7,10 @@ int WINAPI WinMain(HINSTANCE InInstance, HINSTANCE InPreInstance, LPSTR InParam,
     
     WPARAM result = window->Run();
     
-    delete window;
-    window = nullptr;
+    // delete window;
+    // window = nullptr;
+    
+    Delete(window);
 
     
     return 0;

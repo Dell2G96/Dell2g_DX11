@@ -6,6 +6,8 @@ riderModule.iml
 *.tlog
 *.idea
 Debug/
+Docs/
+*.md
 
 
 
