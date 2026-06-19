@@ -117,7 +117,7 @@ void CD3D::CreateViewport()
     Viewport->Width = Width;                    // 뷰포트 가로 크기. 보통 백 버퍼 가로 크기랑 맞춤
     Viewport->Height = Height;                  // 뷰포트 세로 크기. 보통 백 버퍼 세로 크기랑 맞춤.
     Viewport->MinDepth = 0;                     // 깊이 값의 최소 범위. 보통 0.0f를 사용
-    Viewport->MaxDepth = 0;                     // 깊이 값의 최대 범위. 일반적으로는 1.0f 사용.
+    Viewport->MaxDepth = 1;                     // 깊이 값의 최대 범위. 일반적으로는 1.0f 사용.
     
     DeviceContext->RSSetViewports(1, Viewport); // 래스터라이저 단계에 뷰포트를 등록하는 함수야. 첫 번째 값은 등록할 뷰포트 개수야.
 }

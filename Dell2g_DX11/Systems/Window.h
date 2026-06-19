@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 class CWindow
 {
@@ -7,7 +6,10 @@ public:
     CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InInstance);
     ~CWindow();
     
-    WPARAM Run();
+    WPARAM Run(class IExecutable* InExecutable);
+    
+private:
+    void MainRender(class IExecutable* InExecutable);
     
 private:
     void CreateHandle();

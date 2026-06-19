@@ -28,6 +28,10 @@ private:
     
 public:
     void ClearRenderTargetView(FColor InColor = FColor::Black);
+    
+public:
+    ID3D11Device* GetDevice(){return Device;}
+    ID3D11DeviceContext* GetDeviceContext(){return DeviceContext;}
 public:
     HWND Handle;
     float Width, Height;
