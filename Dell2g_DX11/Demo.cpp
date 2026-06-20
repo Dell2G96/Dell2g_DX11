@@ -30,20 +30,16 @@ void Demo::Tick()
     const float y = 5.0f;
     const float lineHeight = 20.f;
     
-    time_t now = time(nullptr);
-    tm localTime ={};
-    localtime_s(&localTime, &now);
+    // 오늘 날짜 현재 시간 출력
+    CGui::Get()->RenderText(x,y,1,1,1,CTimer::Get()->GetCurrentTimeText());
     
-    stringstream currentTime;
-    currentTime << put_time(&localTime, "%y-%m-%d : %H:%M:%S");
-    CGui::Get()->RenderText(x,y,1,1,1,currentTime.str());
-    
+    // FPS 출력
     string fps = "";
     fps += "FPS : ";
     fps += to_string(CTimer::Get()->GetFPS());
-    
     CGui::Get()->RenderText(x,y+lineHeight,1,1,1,fps);
     
+    // 경과 시간 출력
     string time = "";
     time += "경과시간 : ";
     time += to_string(CTimer::Get()->GetRunningTime());

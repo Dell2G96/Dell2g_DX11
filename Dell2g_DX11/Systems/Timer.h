@@ -23,7 +23,8 @@ private:
 public:
     float GetRunningTime() { return RunningTime;}
     UINT GetFPS() {return FPS;}
-    
+    string GetCurrentTimeText();
+
 private:
     steady_clock::time_point StartTime;
     steady_clock::time_point FpsTime;

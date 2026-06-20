@@ -46,3 +46,15 @@ void CTimer::Tick()
         FpsTime = current;
     }
 }
+
+string CTimer::GetCurrentTimeText()
+{
+    time_t now = time(nullptr);
+    tm localTime ={};
+    localtime_s(&localTime, &now);
+    
+    stringstream currentTime;
+    currentTime << put_time(&localTime, "%y-%m-%d : %H:%M:%S");
+    
+    return currentTime.str();
+}
