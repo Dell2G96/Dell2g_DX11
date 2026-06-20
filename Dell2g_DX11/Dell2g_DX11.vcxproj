@@ -159,6 +159,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Buffers\VertexBuffer.cpp" />
+    <ClCompile Include="CDemo.cpp" />
+    <ClCompile Include="Demo2.cpp" />
+    <ClCompile Include="Demo3.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -178,6 +181,9 @@
   <ItemGroup>
     <ClInclude Include="Buffers\VertexBuffer.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="CDemo.h" />
+    <ClInclude Include="Demo2.h" />
+    <ClInclude Include="Demo3.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Maths\Math.h" />

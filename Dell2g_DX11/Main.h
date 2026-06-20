@@ -4,16 +4,15 @@
 class CMain : public IExecutable
 {
 public:
-    void Initialize() override;
-    void Destroy() override;
-    void Tick() override;
-    void Render() override;
+    virtual void Initialize() override;
+    virtual void Destroy() override;
+    virtual void Tick() override;
+    virtual void Render() override;
     
 private:
-    CShader* Shader;
-    
-    FVector Vertices [2];
-    CVertexBuffer* VBuffer;
+    void Push(IExecutable* Inexecutable);
+private:
+    vector<IExecutable*> Executables;
 };
 
 

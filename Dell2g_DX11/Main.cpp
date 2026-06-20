@@ -1,40 +1,52 @@
 #include "Framework.h"
 #include "Main.h"
 
-#include "Buffers/VertexBuffer.h"
 #include "Systems/Window.h"
+
+#include "CDemo.h"
+#include "Demo2.h"
+#include "Demo3.h"
+
+
 
 void CMain::Initialize()
 {
-    Shader = new CShader(L"05_Rasterizer.fx");
-    
-    Vertices[0] = FVector(0, 0,0);
-    Vertices[1] = FVector(1, 0,0);
-    
-    VBuffer = new CVertexBuffer(Vertices, 2, sizeof(FVector));
+    Push(new CDemo);    
+    Push(new CDemo2);    
+    Push(new CDemo3);    
 }
 
 void CMain::Destroy()
 {
-    Delete(VBuffer);
-    Delete(Shader);
+    for (IExecutable* executable : Executables)
+    {
+        executable->Destroy();
+        Delete(executable);
+    }
     
 }
 
 void CMain::Tick()
 {
-    
+    for (IExecutable* executable : Executables)
+        executable->Tick();
 }
 
 void CMain::Render()
 {
-    VBuffer->Render();
-    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
-    Shader->Draw(2);
+    for (IExecutable* executable : Executables)
+    {
+        executable->Render();
+    }
     
 }
 
+void CMain::Push(IExecutable* Inexecutable)
+{
+    Executables.push_back(Inexecutable);
 
+    Inexecutable->Initialize();
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
