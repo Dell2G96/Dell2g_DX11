@@ -21,10 +21,13 @@ CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InI
         //현재 창의 세로 크기를 넘기며, 전체 화면이나 리사이즈를 지원할 때는 변경된 크기를 다시 반영해야 합니다.
     );
     CGui::Create();
+    CTimer::Create();
+    
 }
 
 CWindow::~CWindow()
 {
+    CTimer::Destroy();
     CGui::Destroy();
     CD3D::Destroy();
     
@@ -58,6 +61,7 @@ WPARAM CWindow::Run(class IExecutable* InExecutable)
 void CWindow::MainRender(class IExecutable* InExecutable)
 {
     CGui::Get()->Tick();
+    CTimer::Get()->Tick();
     InExecutable->Tick();
     
     // 게임 렌더링 처리

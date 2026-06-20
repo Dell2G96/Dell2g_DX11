@@ -6,6 +6,14 @@
 #include <string>
 using namespace  std;
 
+// 날짜 , 현재 시간 표시하기 위해서 추가
+#include <ctime>
+#include <iomanip>
+#include <sstream>
+
+#include <chrono>
+using namespace chrono;
+
 // Window SDK
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
@@ -43,5 +51,6 @@ using namespace  std;
 #include "Systems/D3D.h"
 #include "Systems/Shader.h"
 #include "Systems/Gui.h"
+#include "Systems/Timer.h"
 
 #include "Buffers/VertexBuffer.h"

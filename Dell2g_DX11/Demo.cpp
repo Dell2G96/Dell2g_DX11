@@ -25,6 +25,29 @@ void Demo::Tick()
     // ImGui::SeparatorText("Demo");
     ImGui::ColorEdit3("Color", color);
     Shader->AsVector("Color")->SetFloatVector(color);
+    
+    const float x = 5.0f;
+    const float y = 5.0f;
+    const float lineHeight = 20.f;
+    
+    time_t now = time(nullptr);
+    tm localTime ={};
+    localtime_s(&localTime, &now);
+    
+    stringstream currentTime;
+    currentTime << put_time(&localTime, "%y-%m-%d : %H:%M:%S");
+    CGui::Get()->RenderText(x,y,1,1,1,currentTime.str());
+    
+    string fps = "";
+    fps += "FPS : ";
+    fps += to_string(CTimer::Get()->GetFPS());
+    
+    CGui::Get()->RenderText(x,y+lineHeight,1,1,1,fps);
+    
+    string time = "";
+    time += "경과시간 : ";
+    time += to_string(CTimer::Get()->GetRunningTime());
+    CGui::Get()->RenderText(x,y+lineHeight * 2.0f,1,1,1,time);
 }
 
 void Demo::Render()

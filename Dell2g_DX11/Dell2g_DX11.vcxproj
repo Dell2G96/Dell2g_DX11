@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>Framework.h</PrecompiledHeaderFile>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include;../_Libraries;./;</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -177,6 +178,7 @@
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
     <ClCompile Include="Systems\Shader.cpp" />
+    <ClCompile Include="Systems\Timer.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -199,6 +201,7 @@
     <ClInclude Include="Systems\Gui.h" />
     <ClInclude Include="Systems\IExecutable.h" />
     <ClInclude Include="Systems\Shader.h" />
+    <ClInclude Include="Systems\Timer.h" />
     <ClInclude Include="Systems\Window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
