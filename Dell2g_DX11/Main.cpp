@@ -6,7 +6,7 @@
 
 void CMain::Initialize()
 {
-    Shader = new CShader(L"04_Vertices.fx");
+    Shader = new CShader(L"05_Rasterizer.fx");
     
     Vertices[0] = FVector(0, 0,0);
     Vertices[1] = FVector(1, 0,0);
