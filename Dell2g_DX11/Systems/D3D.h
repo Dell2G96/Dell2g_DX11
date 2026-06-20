@@ -26,10 +26,13 @@ private:
     
     void Present();
     
+    void ResizeScreen(float InWidth, float InHeight);
+    
 public:
     void ClearRenderTargetView(FColor InColor = FColor::Black);
     
 public:
+    HWND GetHandle() {return Handle;}
     ID3D11Device* GetDevice(){return Device;}
     ID3D11DeviceContext* GetDeviceContext(){return DeviceContext;}
 public:

@@ -18,6 +18,16 @@ using namespace  std;
 #include <Effects11/d3dx11effect.h>
 #pragma comment(lib, "Effects11.lib")
 
+// #include "ImGui/imgui.h"
+// #include "ImGui/imgui_impl_dx11.h"
+// #include "ImGui/imgui_impl_win32.h"
+// #pragma comment(lib, "ImGui/ImGui.lib")
+
+#include <imgui.h>
+#include <imgui_impl_dx11.h>
+#include <imgui_impl_win32.h>
+
+
 #include "Definitions.h"
 
 #include "Maths/Vector2D.h"
@@ -32,5 +42,6 @@ using namespace  std;
 
 #include "Systems/D3D.h"
 #include "Systems/Shader.h"
+#include "Systems/Gui.h"
 
 #include "Buffers/VertexBuffer.h"

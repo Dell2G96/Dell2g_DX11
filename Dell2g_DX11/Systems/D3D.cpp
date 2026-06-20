@@ -134,6 +134,25 @@ void CD3D::Present()
     
 }
 
+void CD3D::ResizeScreen(float InWidth, float InHeight)
+{
+    if (InWidth < 1.0f || InHeight < 1.0f)
+        return ;
+    
+    Width = InWidth;
+    Height = InHeight;
+    
+    Release(RenderTargetView);
+    Delete(Viewport);
+    
+    // 뺵버퍼를 지운다
+    SwapChain->ResizeBuffers(0, (UINT)Width, (UINT)Height, DXGI_FORMAT_UNKNOWN, 0);
+    
+    // 다시 그린다
+    CreateRTV();
+    CreateViewport();
+}
+
 void CD3D::ClearRenderTargetView(FColor InColor)
 {
     DeviceContext->ClearRenderTargetView(RenderTargetView, InColor);

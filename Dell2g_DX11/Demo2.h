@@ -10,9 +10,10 @@ public:
     void Tick() override;
     void Render() override;
 private:
+    UINT Pass =0;
     CShader* Shader;
     
-    FVector Vertices[2];
+    FVector Vertices[3];
     CVertexBuffer* VBuffer;
     
 };

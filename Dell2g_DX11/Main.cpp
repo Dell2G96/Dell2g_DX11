@@ -3,7 +3,7 @@
 
 #include "Systems/Window.h"
 
-#include "CDemo.h"
+#include "Demo.h"
 #include "Demo2.h"
 #include "Demo3.h"
 
@@ -11,9 +11,9 @@
 
 void CMain::Initialize()
 {
-    Push(new CDemo);    
+    Push(new Demo);    
     Push(new CDemo2);    
-    Push(new CDemo3);    
+//    Push(new CDemo3);    
 }
 
 void CMain::Destroy()
