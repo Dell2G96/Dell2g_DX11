@@ -6,6 +6,8 @@ public:
     CVertexBuffer(void* InData, UINT InCount, UINT InStride);
     ~CVertexBuffer();
     
+    operator ID3D11Buffer* ();
+    
     void Render();
     
 private:

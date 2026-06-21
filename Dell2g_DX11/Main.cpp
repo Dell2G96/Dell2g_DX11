@@ -59,5 +59,6 @@ int WINAPI WinMain(HINSTANCE InInstance, HINSTANCE InPreInstance, LPSTR InParam,
     
     Delete(main);    
     Delete(window);
+    
     return result;
 }

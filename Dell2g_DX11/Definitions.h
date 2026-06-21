@@ -12,6 +12,15 @@
     }\
 }
 
+#define DeleteArray(x)\
+{\
+if ((x) != nullptr)\
+{\
+delete[] (x);\
+(x) = nullptr;\
+}\
+}
+
 #define Release(x)\
 {\
     if ((x) != nullptr)\

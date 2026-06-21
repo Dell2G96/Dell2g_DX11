@@ -3,82 +3,85 @@
 
 void CDemo2::Initialize()
 {
-    Shader = new CShader(L"09_WorldMatrix.fx");
+    Shader = new CShader(L"10_GridRendering.fx");
 
     // 버텍스 버퍼
-    Vertices[0] = FVector(-0.5f, -0.5f, 0);
-    Vertices[1] = FVector(-0.5f, +0.5f, 0);
-    Vertices[2] = FVector(+0.5f, -0.5f, 0);
-    Vertices[3] = FVector(+0.5f, +0.5f, 0);
+    VCount = Width * Height;
+    Vertices = new FVector[VCount];
 
+    for (UINT z = 0; z < Height; z++)
+    {
+        for (UINT x = 0; x < Width; x++)
+        {
+            UINT index = Width * z + x;
 
-    VBuffer = new CVertexBuffer(Vertices, 4, sizeof(FVector));
+            Vertices[index] = FVector((float)x, 0.0f, (float)z);
+        }
+    }
+
+    VBuffer = new CVertexBuffer(Vertices, VCount, sizeof(FVector));
 
     // 인덱스 버퍼 
-    Indices[0] = 0;
-    Indices[1] = 1;
-    Indices[2] = 2;
+    ICount = (Width - 1) * (Height - 1) * 6;
+    Indices = new UINT[ICount];
 
-    Indices[3] = 2;
-    Indices[4] = 1;
-    Indices[5] = 3;
- 
-    IBuffer = new CIndexBuffer(Indices, 6);
-    
-    World = FMatrix::Identity;
-    
-    FVector eye = FVector(0,0,-10);
-    View = FMatrix::CreateLookAt(eye, eye + FVector::Forward, FVector::Up );
-    
-    float width = CD3D::Get()->GetWidth();
-    float height = CD3D::Get()->GetHeight();
-    float aspect = width / height;
+    UINT index = 0;
+    for (UINT y = 0; y < Height - 1; y++)
+    {
+        for (UINT x = 0; x < Width - 1; x++)
+        {
+            Indices[index + 0] = Width * y + x;
+            Indices[index + 1] = Width * (y + 1) + x;
+            Indices[index + 2] = Width * y + x + 1;
 
-    float fov = FMath::Pi * 0.25f;
-    Projection = FMatrix::CreatePerspectiveFieldOfView(fov, aspect, 0.1f, 1000.0f);
+            Indices[index + 3] = Width * y + x + 1;
+            Indices[index + 4] = Width * (y + 1) + x;
+            Indices[index + 5] = Width * (y + 1) + x + 1;
+
+            index += 6;
+        }
+    }
+
+    IBuffer = new CIndexBuffer(Indices, ICount);
+
+
+    World = FMatrix::Identity; //단위 행렬
 }
 
 void CDemo2::Destroy()
 {
-    Delete(VBuffer);
-    Delete(IBuffer);
-    
     Delete(Shader);
+
+    DeleteArray(Vertices);
+    Delete(VBuffer);
+
+    DeleteArray(Indices);
+    Delete(IBuffer);
 }
 
 void CDemo2::Tick()
 {
-#pragma region Pass
-    // ImGui::Separator();
-    // ImGui::SeparatorText("Demo2");
-    // ImGui::InputInt("Pass", (int*)&Pass);
-    // Pass = FMath::Clamp<UINT>(Pass, 0 , 5);
-#pragma endregion
-
-    if (CKeyboard::Get()->Press('L'))
-        World.M41 += 1.f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('J'))
-        World.M41 -= 1.f * CTimer::Get()->GetDeltaTime();
-    
-    if (CKeyboard::Get()->Press('I'))
-        World.M42 += 1.f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('K'))
-        World.M42 -= 1.f * CTimer::Get()->GetDeltaTime();
     
 }
 
 void CDemo2::Render()
 {
     Shader->AsMatrix("World")->SetMatrix(World);
-    Shader->AsMatrix("View")->SetMatrix(View);
-    Shader->AsMatrix("Projection")->SetMatrix(Projection);
+
+    FMatrix view = CContext::Get()->GetView();
+    Shader->AsMatrix("View")->SetMatrix(view);
+
+    FMatrix projection = CContext::Get()->GetProjection();
+    Shader->AsMatrix("Projection")->SetMatrix(projection);
+
     Shader->AsVector("Color")->SetFloatVector(Color);
-    
+
     VBuffer->Render();
     IBuffer->Render();
 
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    Shader->SetTechniqueByName("T_Wireframe");
     Shader->SetPassNumber(0);
-    Shader->DrawIndexed(6);
+    Shader->DrawIndexed(ICount);
 }

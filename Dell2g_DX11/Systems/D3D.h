@@ -22,11 +22,11 @@ private:
     void CreateDevice(); 
     void CreateSwapChain(); 
     void CreateRTV(); 
-    void CreateViewport();
-    
-    void Present();
     
     void ResizeScreen(float InWidth, float InHeight);
+
+    void Present();
+    
     
 public:
     void ClearRenderTargetView(FColor InColor = FColor::Black);

@@ -23,6 +23,11 @@ CVertexBuffer::~CVertexBuffer()
     Release(Buffer);
 }
 
+CVertexBuffer::operator ID3D11Buffer*()
+{
+    return Buffer;
+}
+
 void CVertexBuffer::Render()
 {
     UINT offset = 0;

@@ -23,11 +23,13 @@ CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InI
     CGui::Create();
     CTimer::Create();
     CKeyboard::Create();
+    CContext::Create();
     
 }
 
 CWindow::~CWindow()
 {
+    CContext::Destroy();
     CKeyboard::Destroy();
     CTimer::Destroy();
     CGui::Destroy();
@@ -64,11 +66,13 @@ void CWindow::MainRender(class IExecutable* InExecutable)
 {
     CGui::Get()->Tick();
     CTimer::Get()->Tick();
+    CContext::Get()->Tick();
     InExecutable->Tick();
     
     // 게임 렌더링 처리
     CD3D::Get()->ClearRenderTargetView();      //렌더 타겟을 지울 색상입니다. 
     {
+        CContext::Get()->Render();
         InExecutable->Render();
     }
     CGui::Get()->Render();
@@ -152,6 +156,9 @@ LRESULT CWindow::WNDPROC(HWND InHandle, UINT InMessage, WPARAM InwParam, LPARAM 
         
         if (CD3D::Get() != nullptr)
             CD3D::Get()->ResizeScreen(width, height);
+        
+        if (CContext::Get() != nullptr)
+            CContext::Get()->ResizeScreen(width, height);
     }
     
     

@@ -176,6 +176,7 @@
     <ClCompile Include="Maths\Vector2D.cpp" />
     <ClCompile Include="Maths\Vector4.cpp" />
     <ClCompile Include="Renders\Color.cpp" />
+    <ClCompile Include="Renders\Context.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
     <ClCompile Include="Systems\Keyboard.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Maths\Vector2D.h" />
     <ClInclude Include="Maths\Vector4.h" />
     <ClInclude Include="Renders\Color.h" />
+    <ClInclude Include="Renders\Context.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
     <ClInclude Include="Systems\IExecutable.h" />

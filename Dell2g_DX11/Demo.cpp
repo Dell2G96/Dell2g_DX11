@@ -3,138 +3,104 @@
 
 void Demo::Initialize()
 {
-    Shader = new CShader(L"09_WorldMatrix.fx");
+    Shader = new CShader(L"10_GridRendering.fx");
     
-    Vertices[0] = FVector(-0.5f, -0.5f, 0);
-    Vertices[1] = FVector(-0.5f, +0.5f, 0);
-    Vertices[2] = FVector(+0.5f, -0.5f, 0);
-    Vertices[3] = FVector(+0.5f, +0.5f, 0);
+    // 버텍스 버퍼 설정
+    VCount = Width * Height;
+    Vertices = new FVector[VCount];
     
-    VBuffer = new CVertexBuffer(Vertices, 4, sizeof(FVector));
+    for (UINT y = 0; y < Height ; y++)
+    {
+        for (UINT x = 0; x < Width ; x++)
+        {
+            UINT index = Width * y + x;
+            Vertices[index] = FVector((float)x, (float)y, 0.f);
+        }
+    }
     
-    Indices[0] = 0;
-    Indices[1] = 1;
-    Indices[2] = 2;
+    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVector));
     
-    Indices[3] = 2;
-    Indices[4] = 1;
-    Indices[5] = 3;
     
-    D3D11_BUFFER_DESC desc;
-    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-    desc.ByteWidth = sizeof(UINT) * 6;
-    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-    desc.Usage = D3D11_USAGE_IMMUTABLE;
+    // 인덱서 버퍼 설정
+    ICount = (Width - 1) * (Height - 1) * 6;
+    Indices = new UINT[ICount];
     
-    D3D11_SUBRESOURCE_DATA subResource;
-    ZeroMemory(&subResource, sizeof(D3D11_SUBRESOURCE_DATA));
-    subResource.pSysMem = Indices;
+    UINT index = 0;
+    for (UINT y = 0; y < Height - 1; y++)
+    {
+        for (UINT x = 0; x < Width - 1; x++)
+        {
+            Indices[index + 0] = Width * y + x;
+            Indices[index + 1] = Width * (y +1)+ x;
+            Indices[index + 2] = Width * y + x + 1;
+            
+            Indices[index + 3] = Width * y + x + 1;
+            Indices[index + 4] = Width * (y +1)+ x;
+            Indices[index + 5] = Width * (y + 1) + x + 1;
+            
+            index += 6;
+        }
+    }
     
-    HRESULT hr = CD3D::Get()->GetDevice()->CreateBuffer(&desc, &subResource, &IBuffer);
-    Check(hr);
+    IBuffer = new CIndexBuffer(Indices, ICount);
     
-    World = FMatrix::Identity; // 단위 행렬
-    
-    FVector eye = FVector(0,0,-10);
-    View = FMatrix::CreateLookAt(eye, eye + FVector::Forward, FVector::Up);
-    
-    float width = CD3D::Get()->GetWidth();
-    float height = CD3D::Get()->GetHeight();
-    float aspect = width / height;
-    
-    float fov = FMath::Pi * 0.25f;
-    Projection = FMatrix::CreatePerspectiveFieldOfView(fov, aspect, 0.1f, 1000.f);
-    
-
+    World = FMatrix::Identity;
 }
 
 void Demo::Destroy()
 {
-    Delete(VBuffer);
-    
     Delete(Shader);
     
-    Release(IBuffer);
+    DeleteArray(Vertices);
+    Delete(VBuffer);
+    
+    DeleteArray(Indices);
+    Delete(IBuffer);
+    
 }
 
 void Demo::Tick()
 {
-#pragma region 색 설정 
-    static FColor color = FColor::White;
-    // ImGui::Separator();
-    // ImGui::SeparatorText("Demo");
-    ImGui::ColorEdit3("Color", color);
-    Color = color;
-    
-#pragma endregion
-    
-#pragma region FPS, 시간 설정
-
-    const float x = 5.0f;
-    const float y = 5.0f;
-    const float lineHeight = 20.f;
-    
-    // 오늘 날짜 현재 시간 출력
-    CGui::Get()->RenderText(x,y,1,1,1,CTimer::Get()->GetCurrentTimeText());
-    
-    // FPS 출력
-    string fps = "";
-    fps += "FPS : ";
-    fps += to_string(CTimer::Get()->GetFPS());
-    CGui::Get()->RenderText(x,y+lineHeight,1,1,1,fps);
-    
-    // 경과 시간 출력
-    string time = "";
-    time += "경과시간 : ";
-    time += to_string(CTimer::Get()->GetRunningTime());
-    CGui::Get()->RenderText(x,y+lineHeight * 2.0f,1,1,1,time);
-#pragma endregion 
-
-#pragma region Keyboard UI
-    // if (CKeyboard::Get()->Press('A'))
-    //     Text = "A Press";
-    // else
-    // {
-    //     Text = "";
-    // }
-    // ImGui::LabelText("Press", Text.c_str());
-    //
-    // if (CKeyboard::Get()->Down('B'))
-    //     MessageBox(CD3D::Get()->GetHandle(), L"B키 눌림", L"", MB_OK);
-    //
-    // if (CKeyboard::Get()->Up('C'))
-    //     MessageBox(CD3D::Get()->GetHandle(), L"C키 뗌", L"", MB_OK);
-#pragma endregion 
-
     if (CKeyboard::Get()->Press(VK_RIGHT))
         World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
     else if (CKeyboard::Get()->Press(VK_LEFT))
         World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
-    if (CKeyboard::Get()->Press('D'))
-        World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('A'))
-        World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
+    if (CKeyboard::Get()->Press(VK_UP))
+        World.M43 += 1.0f * CTimer::Get()->GetDeltaTime();
+    else if (CKeyboard::Get()->Press(VK_DOWN))
+        World.M43 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
-    if (CKeyboard::Get()->Press('W'))
-        World.M42 += 1.0f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('S'))
-        World.M42 -= 1.0f * CTimer::Get()->GetDeltaTime();
+    // if (CKeyboard::Get()->Press('D'))
+    //     World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
+    // else if (CKeyboard::Get()->Press('A'))
+    //     World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
+    
+    // if (CKeyboard::Get()->Press('W'))
+    //     World.M42 += 1.0f * CTimer::Get()->GetDeltaTime();
+    // else if (CKeyboard::Get()->Press('S'))
+    //     World.M42 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
 }
 
 void Demo::Render()
 {
     Shader->AsMatrix("World")->SetMatrix(World);
-    Shader->AsMatrix("View")->SetMatrix(View);
-    Shader->AsMatrix("Projection")->SetMatrix(Projection);
+    
+    FMatrix view = CContext::Get()->GetView();
+    Shader->AsMatrix("View")->SetMatrix(view);
+    
+    FMatrix projection = CContext::Get()->GetProjection();
+    Shader->AsMatrix("Projection")->SetMatrix(projection);
+    
     Shader->AsVector("Color")->SetFloatVector(Color);
 
     VBuffer->Render();
-
-    CD3D::Get()->GetDeviceContext()->IASetIndexBuffer(IBuffer, DXGI_FORMAT_R32_UINT, 0);
+    IBuffer->Render();
+    
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+    Shader->SetTechniqueByName("T_Wireframe");
     Shader->SetPassNumber(0);
-    Shader->DrawIndexed(6);
+    Shader->DrawIndexed(ICount);
 }

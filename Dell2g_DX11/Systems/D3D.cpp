@@ -25,7 +25,6 @@ CD3D::CD3D(HWND InHandle, float InWidth, float InHeight)
     CreateDevice();
     CreateSwapChain();
     CreateRTV();
-    CreateViewport();
 }
 
 CD3D::~CD3D()
@@ -34,7 +33,6 @@ CD3D::~CD3D()
     Release(DeviceContext);
     Release(SwapChain);
     Release(RenderTargetView);
-    Delete(Viewport);
 }
 
 void CD3D::CreateDevice()
@@ -109,30 +107,6 @@ void CD3D::CreateRTV()
     DeviceContext->OMSetRenderTargets(1, &RenderTargetView, nullptr);
 }
 
-void CD3D::CreateViewport()
-{
-    Viewport = new D3D11_VIEWPORT();            // 뷰포트 설정을 담을 구조체를 만듦
-    Viewport->TopLeftX = 0;                     // 화면을 그리기 시작할 X 위치. 0이면 백 버퍼의 왼쪽 끝에서 시작
-    Viewport->TopLeftY = 0;                     // 화면을 그리기 시작할 Y 위치. 0이면 백 버퍼의 위쪽 끝에서 시작.
-    Viewport->Width = Width;                    // 뷰포트 가로 크기. 보통 백 버퍼 가로 크기랑 맞춤
-    Viewport->Height = Height;                  // 뷰포트 세로 크기. 보통 백 버퍼 세로 크기랑 맞춤.
-    Viewport->MinDepth = 0;                     // 깊이 값의 최소 범위. 보통 0.0f를 사용
-    Viewport->MaxDepth = 1;                     // 깊이 값의 최대 범위. 일반적으로는 1.0f 사용.
-    
-    DeviceContext->RSSetViewports(1, Viewport); // 래스터라이저 단계에 뷰포트를 등록하는 함수야. 첫 번째 값은 등록할 뷰포트 개수야.
-}
-
-void CD3D::Present()
-{
-    SwapChain->Present(0,0);
-    #pragma region Present 함수 설명
-    // IDXGISwapChain::Present(SyncInterval, Flags)는 CD3D::Present() 내부에서 Present(0, 0)으로 호출됩니다.
-    // SyncInterval 옵션: 0은 즉시 출력, 1 이상은 수직 동기화 대기 프레임 수입니다.
-    // Flags 옵션: 0은 기본 출력, DXGI_PRESENT_TEST, DXGI_PRESENT_DO_NOT_WAIT 같은 DXGI_PRESENT 플래그를 사용할 수 있습니다.
-#pragma endregion 
-    
-    
-}
 
 void CD3D::ResizeScreen(float InWidth, float InHeight)
 {
@@ -150,7 +124,18 @@ void CD3D::ResizeScreen(float InWidth, float InHeight)
     
     // 다시 그린다
     CreateRTV();
-    CreateViewport();
+}
+
+void CD3D::Present()
+{
+    SwapChain->Present(0,0);
+#pragma region Present 함수 설명
+    // IDXGISwapChain::Present(SyncInterval, Flags)는 CD3D::Present() 내부에서 Present(0, 0)으로 호출됩니다.
+    // SyncInterval 옵션: 0은 즉시 출력, 1 이상은 수직 동기화 대기 프레임 수입니다.
+    // Flags 옵션: 0은 기본 출력, DXGI_PRESENT_TEST, DXGI_PRESENT_DO_NOT_WAIT 같은 DXGI_PRESENT 플래그를 사용할 수 있습니다.
+#pragma endregion 
+    
+    
 }
 
 void CD3D::ClearRenderTargetView(FColor InColor)

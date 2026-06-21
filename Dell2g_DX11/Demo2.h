@@ -11,20 +11,28 @@ public:
     void Render() override;
     
 private:
-  FColor Color = FColor::Blue;
+    UINT Width = 65;
+    UINT Height = 65;
+
+private:
+    FColor Color = FColor::White;
+
+private:
+    float Speed = 5.0f;
+    FVector Position = FVector(0, 0, -10);
 
 private:
     CShader* Shader;
-    
-    FVector Vertices[4];
+
+    UINT VCount;
+    FVector* Vertices;
     CVertexBuffer* VBuffer;
-    
-    UINT Indices[6];
+
+    UINT ICount;
+    UINT* Indices;
     CIndexBuffer* IBuffer;
-    
+
 private:
     FMatrix World;
-    FMatrix View;
-    FMatrix Projection;
     
 };

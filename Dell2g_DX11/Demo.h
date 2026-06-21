@@ -11,20 +11,25 @@ public:
     void Render() override;
     
 private:
+    UINT Width = 5;
+    UINT Height = 5;
+    
+private:
     FColor Color = FColor::Red;
 
 private:
     CShader* Shader;
     
-    FVector Vertices[4];
+    UINT VCount;
+    FVector* Vertices;
     CVertexBuffer* VBuffer;
     
-    UINT Indices[6];
-    ID3D11Buffer* IBuffer;
+    UINT ICount;
+    UINT* Indices;
+    CIndexBuffer* IBuffer;
     
 private:
     FMatrix World;
-    FMatrix View;
-    FMatrix Projection;
+    
     
 };
