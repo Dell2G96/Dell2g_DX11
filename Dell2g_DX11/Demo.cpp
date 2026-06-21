@@ -3,13 +3,17 @@
 
 void Demo::Initialize()
 {
-    Shader = new CShader(L"07_UserInterface.fx");
+    Shader = new CShader(L"08_Rectangle.fx");
     
-    Vertices[0] = FVector{ -1.0f, -1.0f, 0 };
-    Vertices[1] = FVector{	0.0f, +1.0f, 0 };
-    Vertices[2] = FVector{ +1.0f, -1.0f, 0 };
+    Vertices[0] = FVector(+0.0f, +0.0f, 0);
+    Vertices[1] = FVector(+0.0f, +0.5f, 0);
+    Vertices[2] = FVector(+0.5f, -0.0f, 0);
     
-    VBuffer = new CVertexBuffer(Vertices, 3, sizeof(FVector));
+    Vertices[3] = FVector(+0.5f, -0.0f, 0);
+    Vertices[4] = FVector(+0.0f, +0.5f, 0);
+    Vertices[5] = FVector(+0.5f, +0.5f, 0);
+    
+    VBuffer = new CVertexBuffer(Vertices, 6, sizeof(FVector));
 }
 
 void Demo::Destroy()
@@ -20,12 +24,17 @@ void Demo::Destroy()
 
 void Demo::Tick()
 {
+#pragma region 색 설정 
     static FColor color = FColor::White;
     // ImGui::Separator();
     // ImGui::SeparatorText("Demo");
     ImGui::ColorEdit3("Color", color);
     Shader->AsVector("Color")->SetFloatVector(color);
     
+#pragma endregion
+    
+#pragma region FPS, 시간 설정
+
     const float x = 5.0f;
     const float y = 5.0f;
     const float lineHeight = 20.f;
@@ -44,6 +53,26 @@ void Demo::Tick()
     time += "경과시간 : ";
     time += to_string(CTimer::Get()->GetRunningTime());
     CGui::Get()->RenderText(x,y+lineHeight * 2.0f,1,1,1,time);
+#pragma endregion 
+    
+#pragma region WireFrame Mode
+    ImGui::InputInt("Technique - Demo", (int*)&Technique);
+    Technique = FMath::Clamp<UINT>(Technique, 0 ,1);
+#pragma endregion 
+
+    if (CKeyboard::Get()->Press('A'))
+        Text = "A Press";
+    else
+    {
+        Text = "";
+    }
+    ImGui::LabelText("Press", Text.c_str());
+    
+    if (CKeyboard::Get()->Down('B'))
+        MessageBox(CD3D::Get()->GetHandle(), L"B키 눌림", L"", MB_OK);
+    
+    if (CKeyboard::Get()->Up('C'))
+        MessageBox(CD3D::Get()->GetHandle(), L"C키 뗌", L"", MB_OK);
 }
 
 void Demo::Render()
@@ -52,6 +81,7 @@ void Demo::Render()
 
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    Shader->SetPassNumber(4);
-    Shader->Draw(3);
+    Shader->SetTechniqueNumber(Technique);
+    Shader->SetPassNumber(0);
+    Shader->Draw(6);
 }

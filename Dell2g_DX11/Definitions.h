@@ -1,5 +1,6 @@
 #pragma once
 
+#define MAX_KEY_COUNT 256
 #define Check(x) { assert((x) >= 0);}
 
 #define Delete(x)\

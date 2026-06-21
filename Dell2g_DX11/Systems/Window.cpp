@@ -22,11 +22,13 @@ CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InI
     );
     CGui::Create();
     CTimer::Create();
+    CKeyboard::Create();
     
 }
 
 CWindow::~CWindow()
 {
+    CKeyboard::Destroy();
     CTimer::Destroy();
     CGui::Destroy();
     CD3D::Destroy();

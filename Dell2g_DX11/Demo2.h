@@ -9,11 +9,16 @@ public:
     void Destroy() override;
     void Tick() override;
     void Render() override;
+    
 private:
-    UINT Pass =0;
+    UINT Technique = 0;
+    UINT Pass = 2;
+    FColor Color = FColor::Blue;
+
+private:
     CShader* Shader;
     
-    FVector Vertices[3];
+    FVector Vertices[4];
     CVertexBuffer* VBuffer;
     
 };

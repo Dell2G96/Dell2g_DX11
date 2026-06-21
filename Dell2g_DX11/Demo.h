@@ -7,12 +7,20 @@ class Demo : public IExecutable
 public:
     void Initialize() override;
     void Destroy() override;
-    void Tick() override;
+    void Tick() override; 
     void Render() override;
+    
+private:
+    string Text = "";
+private:
+    UINT Technique = 0;
+    UINT Pass = 0;
+    FColor Color = FColor::Red;
+    
 private:
     CShader* Shader;
     
-    FVector Vertices[3];
+    FVector Vertices[6];
     CVertexBuffer* VBuffer;
     
 };

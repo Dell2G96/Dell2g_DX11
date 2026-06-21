@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include <string>
+#include <bitset>
 using namespace  std;
 
 // 날짜 , 현재 시간 표시하기 위해서 추가
@@ -52,5 +53,6 @@ using namespace chrono;
 #include "Systems/Shader.h"
 #include "Systems/Gui.h"
 #include "Systems/Timer.h"
+#include "Systems/Keyboard.h"
 
 #include "Buffers/VertexBuffer.h"
