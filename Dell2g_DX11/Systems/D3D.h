@@ -35,6 +35,9 @@ public:
     HWND GetHandle() {return Handle;}
     ID3D11Device* GetDevice(){return Device;}
     ID3D11DeviceContext* GetDeviceContext(){return DeviceContext;}
+    
+    float GetWidth() {return Width;}
+    float GetHeight() {return Height;}
 public:
     HWND Handle;
     float Width, Height;

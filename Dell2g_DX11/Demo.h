@@ -10,8 +10,11 @@ public:
     void Tick() override; 
     void Render() override;
     
-private:
-    string Text = "";
+#pragma region Keyboard UI
+// private:
+//     string Text = "";
+#pragma endregion 
+
 private:
     UINT Technique = 0;
     UINT Pass = 0;
@@ -22,5 +25,9 @@ private:
     
     FVector Vertices[6];
     CVertexBuffer* VBuffer;
+private:
+    FMatrix World;
+    FMatrix View;
+    FMatrix Projection;
     
 };

@@ -24,14 +24,17 @@ public:
     float GetRunningTime() { return RunningTime;}
     UINT GetFPS() {return FPS;}
     string GetCurrentTimeText();
-
+public:
+    float GetDeltaTime() { return DeltaTime;}
+    
 private:
     steady_clock::time_point StartTime;
     steady_clock::time_point FpsTime;
+    steady_clock::time_point PrevFrameTime;
     
     float RunningTime;
     UINT FrameCount = 0;
     UINT FPS = 0;
     
-    
+    float DeltaTime = 0.f;
 };

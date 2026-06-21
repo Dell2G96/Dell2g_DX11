@@ -24,6 +24,7 @@ CTimer::CTimer()
 {
     StartTime = steady_clock::now();
     FpsTime = steady_clock::now();
+    PrevFrameTime = steady_clock::now();
 }
 
 CTimer::~CTimer()
@@ -33,6 +34,7 @@ CTimer::~CTimer()
 void CTimer::Tick()
 {
     steady_clock::time_point current = steady_clock::now();
+    
     duration<float> temp = current - StartTime;
     RunningTime = temp.count();
     
@@ -45,6 +47,9 @@ void CTimer::Tick()
         FrameCount = 0;
         FpsTime = current;
     }
+    duration<float> temp2 = current - PrevFrameTime;
+    DeltaTime = temp2.count();
+    PrevFrameTime = current;
 }
 
 string CTimer::GetCurrentTimeText()
