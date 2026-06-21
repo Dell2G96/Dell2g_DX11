@@ -10,21 +10,18 @@ public:
     void Tick() override; 
     void Render() override;
     
-#pragma region Keyboard UI
-// private:
-//     string Text = "";
-#pragma endregion 
-
 private:
-    UINT Technique = 0;
-    UINT Pass = 0;
     FColor Color = FColor::Red;
-    
+
 private:
     CShader* Shader;
     
-    FVector Vertices[6];
+    FVector Vertices[4];
     CVertexBuffer* VBuffer;
+    
+    UINT Indices[6];
+    ID3D11Buffer* IBuffer;
+    
 private:
     FMatrix World;
     FMatrix View;

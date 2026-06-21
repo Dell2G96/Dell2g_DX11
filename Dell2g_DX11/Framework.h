@@ -56,3 +56,4 @@ using namespace chrono;
 #include "Systems/Keyboard.h"
 
 #include "Buffers/VertexBuffer.h"
+#include "Buffers/IndexBuffer.h"

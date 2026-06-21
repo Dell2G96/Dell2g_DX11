@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Demo2.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="Systems\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffers\IndexBuffer.h" />
     <ClInclude Include="Buffers\VertexBuffer.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="Demo.h" />

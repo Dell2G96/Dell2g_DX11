@@ -11,14 +11,20 @@ public:
     void Render() override;
     
 private:
-    UINT Technique = 0;
-    UINT Pass = 2;
-    FColor Color = FColor::Blue;
+  FColor Color = FColor::Blue;
 
 private:
     CShader* Shader;
     
     FVector Vertices[4];
     CVertexBuffer* VBuffer;
+    
+    UINT Indices[6];
+    CIndexBuffer* IBuffer;
+    
+private:
+    FMatrix World;
+    FMatrix View;
+    FMatrix Projection;
     
 };

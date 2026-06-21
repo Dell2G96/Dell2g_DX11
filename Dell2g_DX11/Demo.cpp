@@ -8,11 +8,30 @@ void Demo::Initialize()
     Vertices[0] = FVector(-0.5f, -0.5f, 0);
     Vertices[1] = FVector(-0.5f, +0.5f, 0);
     Vertices[2] = FVector(+0.5f, -0.5f, 0);
-    Vertices[3] = FVector(+0.5f, -0.5f, 0);
-    Vertices[4] = FVector(-0.5f, +0.5f, 0);
-    Vertices[5] = FVector(+0.5f, +0.5f, 0);
+    Vertices[3] = FVector(+0.5f, +0.5f, 0);
     
-    VBuffer = new CVertexBuffer(Vertices, 6, sizeof(FVector));
+    VBuffer = new CVertexBuffer(Vertices, 4, sizeof(FVector));
+    
+    Indices[0] = 0;
+    Indices[1] = 1;
+    Indices[2] = 2;
+    
+    Indices[3] = 2;
+    Indices[4] = 1;
+    Indices[5] = 3;
+    
+    D3D11_BUFFER_DESC desc;
+    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+    desc.ByteWidth = sizeof(UINT) * 6;
+    desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    desc.Usage = D3D11_USAGE_IMMUTABLE;
+    
+    D3D11_SUBRESOURCE_DATA subResource;
+    ZeroMemory(&subResource, sizeof(D3D11_SUBRESOURCE_DATA));
+    subResource.pSysMem = Indices;
+    
+    HRESULT hr = CD3D::Get()->GetDevice()->CreateBuffer(&desc, &subResource, &IBuffer);
+    Check(hr);
     
     World = FMatrix::Identity; // 단위 행렬
     
@@ -32,7 +51,10 @@ void Demo::Initialize()
 void Demo::Destroy()
 {
     Delete(VBuffer);
+    
     Delete(Shader);
+    
+    Release(IBuffer);
 }
 
 void Demo::Tick()
@@ -42,7 +64,7 @@ void Demo::Tick()
     // ImGui::Separator();
     // ImGui::SeparatorText("Demo");
     ImGui::ColorEdit3("Color", color);
-    Shader->AsVector("Color")->SetFloatVector(color);
+    Color = color;
     
 #pragma endregion
     
@@ -67,11 +89,6 @@ void Demo::Tick()
     time += to_string(CTimer::Get()->GetRunningTime());
     CGui::Get()->RenderText(x,y+lineHeight * 2.0f,1,1,1,time);
 #pragma endregion 
-    
-#pragma region WireFrame Mode
-    ImGui::InputInt("Technique - Demo", (int*)&Technique);
-    Technique = FMath::Clamp<UINT>(Technique, 0 ,1);
-#pragma endregion 
 
 #pragma region Keyboard UI
     // if (CKeyboard::Get()->Press('A'))
@@ -95,20 +112,14 @@ void Demo::Tick()
         World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
     if (CKeyboard::Get()->Press('D'))
-        World.M11 += 1.0f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('A'))
-        World.M11 -= 1.0f * CTimer::Get()->GetDeltaTime();
-    
-    if (CKeyboard::Get()->Press('W'))
-        World.M22 += 1.0f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('S'))
-        World.M22 -= 1.0f * CTimer::Get()->GetDeltaTime();
-    
-    if (CKeyboard::Get()->Press(VK_RIGHT))
         World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press(VK_LEFT))
+    else if (CKeyboard::Get()->Press('A'))
         World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
+    if (CKeyboard::Get()->Press('W'))
+        World.M42 += 1.0f * CTimer::Get()->GetDeltaTime();
+    else if (CKeyboard::Get()->Press('S'))
+        World.M42 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
 }
 
@@ -117,12 +128,13 @@ void Demo::Render()
     Shader->AsMatrix("World")->SetMatrix(World);
     Shader->AsMatrix("View")->SetMatrix(View);
     Shader->AsMatrix("Projection")->SetMatrix(Projection);
-    Shader->AsMatrix("Color")->SetFloatVector(Color);
+    Shader->AsVector("Color")->SetFloatVector(Color);
+
     VBuffer->Render();
 
+    CD3D::Get()->GetDeviceContext()->IASetIndexBuffer(IBuffer, DXGI_FORMAT_R32_UINT, 0);
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    Shader->SetTechniqueNumber(Technique);
     Shader->SetPassNumber(0);
-    Shader->Draw(6);
+    Shader->DrawIndexed(6);
 }
