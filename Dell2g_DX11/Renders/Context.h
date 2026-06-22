@@ -25,15 +25,17 @@ private:
     void ResizeScreen(float InWidth, float InHeight);
     
 public:
-    const FMatrix& GetView(){return View;}
+    const FMatrix& GetView(){return Camera->GetViewMatrix();}
     const FMatrix& GetProjection(){return Projection;}
     
 private:
     float CameraMoveSpeed = 5.f;
-    FVector CameraPosition = FVector(0, 2, -10);
+    float CameraRotaionSpeed = 200.f;
+    //FVector CameraPosition = FVector(0, 2, -10);
     
 private:
-    FMatrix View;
+    CCamera* Camera;
+    
     FMatrix Projection;
     D3D11_VIEWPORT* Viewport;
     

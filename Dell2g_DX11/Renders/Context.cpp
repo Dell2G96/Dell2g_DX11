@@ -25,7 +25,7 @@ void CContext::Destroy()
 
 CContext::CContext()
 {
-    View = FMatrix::Identity;
+    Camera = new CCamera();
     
     float width = CD3D::Get()->GetWidth();
     float height = CD3D::Get()->GetHeight();
@@ -47,28 +47,45 @@ CContext::CContext()
 
 CContext::~CContext()
 {
+    Delete(Camera);
     Delete(Viewport);
 
 }
 
 void CContext::Tick()
 {
-    if (CKeyboard::Get()->Press('E'))
-        CameraPosition.Y += CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('Q'))
-        CameraPosition.Y -= CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
-
-    if (CKeyboard::Get()->Press('D'))
-        CameraPosition.X += CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('A'))
-        CameraPosition.X -= CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
-
-    if (CKeyboard::Get()->Press('W'))
-        CameraPosition.Z += CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
-    else if (CKeyboard::Get()->Press('S'))
-        CameraPosition.Z -= CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+    if (CMouse::Get()->Press(EMouseButton::Right))
+    {
+        FVector position = Camera->GetPosition();
     
-    View = FMatrix::CreateLookAt(CameraPosition, CameraPosition + FVector::Forward, FVector::Up);
+        // 카메라 앞, 뒤 
+        if (CKeyboard::Get()->Press('W'))
+            position = position + Camera->GetForward() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+        else if(CKeyboard::Get()->Press('S'))
+            position = position - Camera->GetForward() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+    
+        // 카메라 좌,우
+        if (CKeyboard::Get()->Press('D'))
+            position = position + Camera->GetRight() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+        else if(CKeyboard::Get()->Press('A'))
+            position = position - Camera->GetRight() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+    
+        // 카메라 업, 다운
+        if (CKeyboard::Get()->Press('E'))
+            position = position + Camera->GetUp() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+        else if (CKeyboard::Get()->Press('Q'))
+            position = position - Camera->GetUp() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+        Camera->SetPosition(position);
+    
+        FVector delta = CMouse::Get()->GetDelta();
+    
+        FVector rotation = Camera->GetRotation();
+        rotation.X = rotation.X + delta.Y * CameraRotaionSpeed * CTimer::Get()->GetDeltaTime();
+        rotation.Y = rotation.Y + delta.X * CameraRotaionSpeed * CTimer::Get()->GetDeltaTime();
+        rotation.Z = 0.0f;
+    
+        Camera->SetRotation(rotation);
+    }
 }
 
 void CContext::Render()
@@ -96,8 +113,12 @@ void CContext::Render()
     CGui::Get()->RenderText(x,y+lineHeight * 2.0f,1,1,1,time);
     
     char value[256];
-    sprintf_s(value, 256, "VIew Position : %3.2f, %3.2f, %3.2f", CameraPosition.X, CameraPosition.Y, CameraPosition.Z);
-    CGui::Get()->RenderText(5,y+lineHeight * 3.0f,1,1,1, value);
+    const FVector& rotation = Camera->GetRotation();
+    sprintf_s(value, 256, "VIew Rotation : %3.2f, %3.2f, %3.2f", Camera->GetRotation().X, Camera->GetRotation().Y, Camera->GetRotation().Z);
+    CGui::Get()->RenderText(x,y+lineHeight * 3.0f,1,1,1, value);
+    
+    sprintf_s(value, 256, "VIew Position : %3.2f, %3.2f, %3.2f", Camera->GetPosition().X, Camera->GetPosition().Y, Camera->GetPosition().Z);
+    CGui::Get()->RenderText(x,y+lineHeight * 4.0f,1,1,1, value);
     
 #pragma endregion 
     

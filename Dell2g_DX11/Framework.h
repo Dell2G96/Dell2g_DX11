@@ -59,5 +59,7 @@ using namespace chrono;
 #include "Buffers/VertexBuffer.h"
 #include "Buffers/IndexBuffer.h"
 
+#include "Viewer/Camera.h"
+
 #include "Renders/Context.h"
 #include "Renders/VertexLayout.h"

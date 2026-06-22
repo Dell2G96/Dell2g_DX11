@@ -109,16 +109,16 @@ void CDemo2::Destroy()
 
 void CDemo2::Tick()
 {
-    if (CMouse::Get()->Press(EMouseButton::Right))
-    {
-	    RotationY -= Speed * CMouse::Get()->GetDelta().X * CTimer::Get()->GetDeltaTime();
-    	
-    	RotationY = FMath::WrapAngle(RotationY);
-    	Radian = FMath::ToRadians(RotationY);
-    	World = FMatrix::CreateRotationY(Radian);
-    }
-	ImGui::Text("Radian : %f", Radian);
-	ImGui::Text("RotationY : %f", RotationY);
+ //    if (CMouse::Get()->Press(EMouseButton::Right))
+ //    {
+	//     RotationY -= Speed * CMouse::Get()->GetDelta().X * CTimer::Get()->GetDeltaTime();
+ //    	
+ //    	RotationY = FMath::WrapAngle(RotationY);
+ //    	Radian = FMath::ToRadians(RotationY);
+ //    	World = FMatrix::CreateRotationY(Radian);
+ //    }
+	// ImGui::Text("Radian : %f", Radian);
+	// ImGui::Text("RotationY : %f", RotationY);
 }
 
 void CDemo2::Render()

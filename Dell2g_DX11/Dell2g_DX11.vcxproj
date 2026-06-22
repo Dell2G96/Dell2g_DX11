@@ -184,6 +184,7 @@
     <ClCompile Include="Systems\Shader.cpp" />
     <ClCompile Include="Systems\Timer.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Viewer\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Buffers\IndexBuffer.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Systems\Shader.h" />
     <ClInclude Include="Systems\Timer.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Viewer\Camera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
