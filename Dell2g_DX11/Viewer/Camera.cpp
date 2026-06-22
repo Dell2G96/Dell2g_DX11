@@ -62,7 +62,7 @@ FVector CCamera::GetRotation()
 
 void CCamera::SetRotation(float InX, float InY, float InZ)
 {
-    SetPosition(FVector(InX,InY,InZ));
+    SetRotation(FVector(InX,InY,InZ));
 }
 
 void CCamera::SetRotation(const FVector& InValue)
