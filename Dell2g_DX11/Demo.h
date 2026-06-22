@@ -11,20 +11,13 @@ public:
     void Render() override;
     
 private:
-    UINT Width = 5;
-    UINT Height = 5;
-    
-private:
-    FColor Color = FColor::Red;
-
-private:
     CShader* Shader;
     
-    UINT VCount;
-    FVector* Vertices;
+    UINT VCount = 4;
+    FVertexColor* Vertices;
     CVertexBuffer* VBuffer;
     
-    UINT ICount;
+    UINT ICount = 6;
     UINT* Indices;
     CIndexBuffer* IBuffer;
     

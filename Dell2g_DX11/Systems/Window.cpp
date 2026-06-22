@@ -3,6 +3,7 @@
 
 #include "IExecutable.h"
 
+
 CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InInstance)
     :AppName(InAppName) , Width(InWitdh), Height(InHeight), Instance(InInstance)
 {
@@ -24,11 +25,13 @@ CWindow::CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InI
     CTimer::Create();
     CKeyboard::Create();
     CContext::Create();
+    CMouse::Create();
     
 }
 
 CWindow::~CWindow()
 {
+    CMouse::Destroy();
     CContext::Destroy();
     CKeyboard::Destroy();
     CTimer::Destroy();
@@ -67,17 +70,17 @@ void CWindow::MainRender(class IExecutable* InExecutable)
     CGui::Get()->Tick();
     CTimer::Get()->Tick();
     CContext::Get()->Tick();
+    CMouse::Get()->Tick();
     InExecutable->Tick();
     
     // 게임 렌더링 처리
-    CD3D::Get()->ClearRenderTargetView();      //렌더 타겟을 지울 색상입니다. 
+    CD3D::Get()->ClearRenderTargetView();      //렌더 타겟을 지울 색상
     {
         CContext::Get()->Render();
         InExecutable->Render();
     }
     CGui::Get()->Render();
     CD3D::Get()->Present();                         
-    // Present(): Window.cpp에서는 매개변수가 없는 CD3D 래퍼 함수입니다.
     
 }
 
@@ -146,6 +149,7 @@ void CWindow::CreateHandle()
 
 LRESULT CWindow::WNDPROC(HWND InHandle, UINT InMessage, WPARAM InwParam, LPARAM InlParam)
 {
+    CMouse::Get()->WndProc(InMessage, InwParam, InlParam);
     if (CGui::Get()->WndProc(InHandle, InMessage, InwParam, InlParam))
         return true;
     

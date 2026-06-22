@@ -5,34 +5,28 @@
 class CDemo2 : public IExecutable
 {
 public:
-    void Initialize() override;
-    void Destroy() override;
-    void Tick() override;
-    void Render() override;
-    
-private:
-    UINT Width = 65;
-    UINT Height = 65;
-
-private:
-    FColor Color = FColor::White;
-
-private:
-    float Speed = 5.0f;
-    FVector Position = FVector(0, 0, -10);
+    void Initialize();
+    void Destroy();
+    void Tick();
+    void Render();
 
 private:
     CShader* Shader;
 
-    UINT VCount;
-    FVector* Vertices;
+    UINT VCount = 6 * 4;
+    FVertexColor* Vertices;
     CVertexBuffer* VBuffer;
 
-    UINT ICount;
+    UINT ICount = 6 * 6;
     UINT* Indices;
     CIndexBuffer* IBuffer;
 
 private:
     FMatrix World;
-    
+
+private:
+    float Speed = 200.0f;
+    float RotationY = 0.0f;
+
+    float Radian = 0.0f;
 };

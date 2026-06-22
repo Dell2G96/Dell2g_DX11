@@ -3,48 +3,35 @@
 
 void Demo::Initialize()
 {
-    Shader = new CShader(L"10_GridRendering.fx");
+    Shader = new CShader(L"11_VertexColor.fx");
     
     // 버텍스 버퍼 설정
-    VCount = Width * Height;
-    Vertices = new FVector[VCount];
+    Vertices = new FVertexColor[VCount];
+
+    Vertices[0].Position = FVector(-0.5f, 0.0f, -0.5f);
+    Vertices[1].Position = FVector(-0.5f, 0.0f, +0.5f);
+    Vertices[2].Position = FVector(+0.5f, 0.0f, -0.5f);
+    Vertices[3].Position = FVector(+0.5f, 0.0f, +0.5f);
+
+    //Vertices[0].Color = FColor::White;
+    //Vertices[1].Color = FColor::Blue;
+    //Vertices[2].Color = FColor::Green;
+    //Vertices[3].Color = FColor::Red;
+
+    Vertices[0].Color = FColor::White;
+    Vertices[1].Color = FColor::White;
+    Vertices[2].Color = FColor::White;
+    Vertices[3].Color = FColor::White;
     
-    for (UINT y = 0; y < Height ; y++)
-    {
-        for (UINT x = 0; x < Width ; x++)
-        {
-            UINT index = Width * y + x;
-            Vertices[index] = FVector((float)x, (float)y, 0.f);
-        }
-    }
-    
-    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVector));
+    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVertexColor));
     
     
     // 인덱서 버퍼 설정
-    ICount = (Width - 1) * (Height - 1) * 6;
-    Indices = new UINT[ICount];
-    
-    UINT index = 0;
-    for (UINT y = 0; y < Height - 1; y++)
-    {
-        for (UINT x = 0; x < Width - 1; x++)
-        {
-            Indices[index + 0] = Width * y + x;
-            Indices[index + 1] = Width * (y +1)+ x;
-            Indices[index + 2] = Width * y + x + 1;
-            
-            Indices[index + 3] = Width * y + x + 1;
-            Indices[index + 4] = Width * (y +1)+ x;
-            Indices[index + 5] = Width * (y + 1) + x + 1;
-            
-            index += 6;
-        }
-    }
+    Indices = new UINT[ICount]{0,1,2, 2,1,3};
     
     IBuffer = new CIndexBuffer(Indices, ICount);
     
-    World = FMatrix::Identity;
+    World = FMatrix::CreateScale(FVector(10, 1, 10));
 }
 
 void Demo::Destroy()
@@ -71,16 +58,15 @@ void Demo::Tick()
     else if (CKeyboard::Get()->Press(VK_DOWN))
         World.M43 -= 1.0f * CTimer::Get()->GetDeltaTime();
     
-    // if (CKeyboard::Get()->Press('D'))
-    //     World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
-    // else if (CKeyboard::Get()->Press('A'))
-    //     World.M41 -= 1.0f * CTimer::Get()->GetDeltaTime();
+    string str = "";
+    if (CMouse::Get()->Press(0)) str += "Left,";
+    if (CMouse::Get()->Press(1)) str += "Right,";
+    if (CMouse::Get()->Press(2)) str += "Middle,";
     
-    // if (CKeyboard::Get()->Press('W'))
-    //     World.M42 += 1.0f * CTimer::Get()->GetDeltaTime();
-    // else if (CKeyboard::Get()->Press('S'))
-    //     World.M42 -= 1.0f * CTimer::Get()->GetDeltaTime();
+    ImGui::Text("Press : %s", str.c_str());
     
+    ImGui::Text("Position : %s", CMouse::Get()->GetPosition().ToString().c_str());
+    ImGui::Text("Delta : %s", CMouse::Get()->GetDelta().ToString().c_str());
 }
 
 void Demo::Render()
@@ -93,14 +79,12 @@ void Demo::Render()
     FMatrix projection = CContext::Get()->GetProjection();
     Shader->AsMatrix("Projection")->SetMatrix(projection);
     
-    Shader->AsVector("Color")->SetFloatVector(Color);
 
     VBuffer->Render();
     IBuffer->Render();
     
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-    Shader->SetTechniqueByName("T_Wireframe");
     Shader->SetPassNumber(0);
     Shader->DrawIndexed(ICount);
 }
