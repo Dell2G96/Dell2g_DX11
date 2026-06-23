@@ -11,10 +11,13 @@ public:
     void Render() override;
     
 private:
+    UINT Address =0;
+    
+private:
     CShader* Shader;
     
     UINT VCount = 4;
-    FVertexColor* Vertices;
+    FVertexTexture* Vertices;
     CVertexBuffer* VBuffer;
     
     UINT ICount = 6;
@@ -23,6 +26,8 @@ private:
     
 private:
     FMatrix World;
+    
+    CTexture2D* Texture;
     
     
 };

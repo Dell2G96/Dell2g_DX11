@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 
 #include <Windows.h>
 #include <assert.h>
@@ -36,6 +36,10 @@ using namespace chrono;
 #include <imgui_impl_dx11.h>
 #include <imgui_impl_win32.h>
 
+//DirectXTex
+#include <DirectXTex.h>
+# pragma comment(lib, DirectXTex.lib)
+
 
 #include "Definitions.h"
 
@@ -61,5 +65,9 @@ using namespace chrono;
 
 #include "Viewer/Camera.h"
 
+#include "Utilities/Path.h"
+#include "Utilities/String.h"
+
 #include "Renders/Context.h"
 #include "Renders/VertexLayout.h"
+#include "Renders/Texture2D.h"

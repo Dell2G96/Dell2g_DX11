@@ -11,22 +11,21 @@ public:
     void Render();
 
 private:
+    UINT Filter = 0;
+
+private:
     CShader* Shader;
 
-    UINT VCount = 6 * 4;
-    FVertexColor* Vertices;
+    UINT VCount = 4;
+    FVertexTexture* Vertices;
     CVertexBuffer* VBuffer;
 
-    UINT ICount = 6 * 6;
+    UINT ICount = 6;
     UINT* Indices;
     CIndexBuffer* IBuffer;
 
 private:
     FMatrix World;
 
-private:
-    float Speed = 200.0f;
-    float RotationY = 0.0f;
-
-    float Radian = 0.0f;
+    CTexture2D* Texture;
 };

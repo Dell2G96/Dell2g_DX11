@@ -177,6 +177,7 @@
     <ClCompile Include="Maths\Vector4.cpp" />
     <ClCompile Include="Renders\Color.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
+    <ClCompile Include="Renders\Texture2D.cpp" />
     <ClCompile Include="Systems\D3D.cpp" />
     <ClCompile Include="Systems\Gui.cpp" />
     <ClCompile Include="Systems\Keyboard.cpp" />
@@ -184,6 +185,8 @@
     <ClCompile Include="Systems\Shader.cpp" />
     <ClCompile Include="Systems\Timer.cpp" />
     <ClCompile Include="Systems\Window.cpp" />
+    <ClCompile Include="Utilities\Path.cpp" />
+    <ClCompile Include="Utilities\String.cpp" />
     <ClCompile Include="Viewer\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +207,7 @@
     <ClInclude Include="Maths\Vector4.h" />
     <ClInclude Include="Renders\Color.h" />
     <ClInclude Include="Renders\Context.h" />
+    <ClInclude Include="Renders\Texture2D.h" />
     <ClInclude Include="Renders\VertexLayout.h" />
     <ClInclude Include="Systems\D3D.h" />
     <ClInclude Include="Systems\Gui.h" />
@@ -213,6 +217,8 @@
     <ClInclude Include="Systems\Shader.h" />
     <ClInclude Include="Systems\Timer.h" />
     <ClInclude Include="Systems\Window.h" />
+    <ClInclude Include="Utilities\Path.h" />
+    <ClInclude Include="Utilities\String.h" />
     <ClInclude Include="Viewer\Camera.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

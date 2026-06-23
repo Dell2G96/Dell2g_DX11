@@ -75,13 +75,14 @@ void CContext::Tick()
             position = position + Camera->GetUp() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
         else if (CKeyboard::Get()->Press('Q'))
             position = position - Camera->GetUp() * CameraMoveSpeed * CTimer::Get()->GetDeltaTime();
+        
         Camera->SetPosition(position);
     
         FVector delta = CMouse::Get()->GetDelta();
     
         FVector rotation = Camera->GetRotation();
-        rotation.X = rotation.X + delta.Y * CameraRotaionSpeed * CTimer::Get()->GetDeltaTime();
-        rotation.Y = rotation.Y + delta.X * CameraRotaionSpeed * CTimer::Get()->GetDeltaTime();
+        rotation.X = rotation.X + delta.Y * CameraRotationSpeed * CTimer::Get()->GetDeltaTime();
+        rotation.Y = rotation.Y + delta.X * CameraRotationSpeed * CTimer::Get()->GetDeltaTime();
         rotation.Z = 0.0f;
     
         Camera->SetRotation(rotation);

@@ -3,27 +3,28 @@
 
 void Demo::Initialize()
 {
-    Shader = new CShader(L"11_VertexColor.fx");
+    CContext::Get()->GetCamera()->SetPosition(FVector(0,0,-2));
+    CContext::Get()->SetCameraMoveSpeed(1.0f);
+    CContext::Get()->SetCameraRotaionSpeed(0.f);
+    
+    Shader = new CShader(L"12_Sampling.fx");
     
     // 버텍스 버퍼 설정
-    Vertices = new FVertexColor[VCount];
+    Vertices = new FVertexTexture[VCount];
 
-    Vertices[0].Position = FVector(-0.5f, 0.0f, -0.5f);
-    Vertices[1].Position = FVector(-0.5f, 0.0f, +0.5f);
-    Vertices[2].Position = FVector(+0.5f, 0.0f, -0.5f);
-    Vertices[3].Position = FVector(+0.5f, 0.0f, +0.5f);
+    Vertices[0].Position = FVector(-0.5f, -0.5f, 0.0f);
+    Vertices[1].Position = FVector(-0.5f, +0.5f, 0.0f);
+    Vertices[2].Position = FVector(+0.5f, -0.5f, 0.0f);
+    Vertices[3].Position = FVector(+0.5f, +0.5f, 0.0f);
 
-    //Vertices[0].Color = FColor::White;
-    //Vertices[1].Color = FColor::Blue;
-    //Vertices[2].Color = FColor::Green;
-    //Vertices[3].Color = FColor::Red;
-
-    Vertices[0].Color = FColor::White;
-    Vertices[1].Color = FColor::White;
-    Vertices[2].Color = FColor::White;
-    Vertices[3].Color = FColor::White;
+    Vertices[0].Uv = FVector2D(0.0f, 2.0f);
+    Vertices[1].Uv = FVector2D(0.0f, 0.0f);
+    Vertices[2].Uv = FVector2D(2.0f, 2.0f);
+    Vertices[3].Uv = FVector2D(2.0f, 0.0f);
     
-    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVertexColor));
+    Texture = new CTexture2D(Shader, "Map", L"../_Textures/김채원.png");
+    
+    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVertexTexture));
     
     
     // 인덱서 버퍼 설정
@@ -31,7 +32,7 @@ void Demo::Initialize()
     
     IBuffer = new CIndexBuffer(Indices, ICount);
     
-    World = FMatrix::CreateScale(FVector(10, 1, 10));
+	World = FMatrix::Identity;
 }
 
 void Demo::Destroy()
@@ -44,10 +45,15 @@ void Demo::Destroy()
     DeleteArray(Indices);
     Delete(IBuffer);
     
+    Delete(Texture);
+    
 }
 
 void Demo::Tick()
 {
+
+#pragma region 도형 이동
+
     if (CKeyboard::Get()->Press(VK_RIGHT))
         World.M41 += 1.0f * CTimer::Get()->GetDeltaTime();
     else if (CKeyboard::Get()->Press(VK_LEFT))
@@ -57,16 +63,16 @@ void Demo::Tick()
         World.M43 += 1.0f * CTimer::Get()->GetDeltaTime();
     else if (CKeyboard::Get()->Press(VK_DOWN))
         World.M43 -= 1.0f * CTimer::Get()->GetDeltaTime();
+#pragma endregion
     
-    string str = "";
-    if (CMouse::Get()->Press(0)) str += "Left,";
-    if (CMouse::Get()->Press(1)) str += "Right,";
-    if (CMouse::Get()->Press(2)) str += "Middle,";
-    
-    ImGui::Text("Press : %s", str.c_str());
-    
+#pragma region 마우스 위치, 델타 값
     ImGui::Text("Position : %s", CMouse::Get()->GetPosition().ToString().c_str());
     ImGui::Text("Delta : %s", CMouse::Get()->GetDelta().ToString().c_str());
+#pragma endregion
+    
+    // Address 설정 동적으로 바꾸기
+    ImGui::InputInt("Address", (int*)&Address);
+    Address = FMath::Clamp<UINT>(Address, 0, 3);
 }
 
 void Demo::Render()
@@ -79,9 +85,12 @@ void Demo::Render()
     FMatrix projection = CContext::Get()->GetProjection();
     Shader->AsMatrix("Projection")->SetMatrix(projection);
     
+    Shader->AsScalar("Address")->SetInt(Address);
+    
 
     VBuffer->Render();
     IBuffer->Render();
+    Texture->Render();
     
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

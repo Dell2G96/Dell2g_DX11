@@ -26,12 +26,17 @@ private:
     
 public:
     const FMatrix& GetView(){return Camera->GetViewMatrix();}
-    const FMatrix& GetProjection(){return Projection;}
+    const FMatrix& GetProjection() {return Projection;}
     
+public:
+    CCamera* GetCamera() {return Camera;}
+
+public:
+    void SetCameraMoveSpeed(float InValue) { CameraMoveSpeed = InValue;}
+    void SetCameraRotaionSpeed(float InValue) { CameraRotationSpeed = InValue;}
 private:
     float CameraMoveSpeed = 5.f;
-    float CameraRotaionSpeed = 200.f;
-    //FVector CameraPosition = FVector(0, 2, -10);
+    float CameraRotationSpeed = 200.f;
     
 private:
     CCamera* Camera;
