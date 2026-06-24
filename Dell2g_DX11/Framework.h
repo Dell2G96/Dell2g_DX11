@@ -55,6 +55,7 @@ using namespace chrono;
 
 #include "Systems/D3D.h"
 #include "Systems/Shader.h"
+#include "Systems/HLSLShader.h"
 #include "Systems/Gui.h"
 #include "Systems/Timer.h"
 #include "Systems/Keyboard.h"
@@ -62,6 +63,7 @@ using namespace chrono;
 
 #include "Buffers/VertexBuffer.h"
 #include "Buffers/IndexBuffer.h"
+#include "Buffers/ConstantBuffer.h"
 
 #include "Viewer/Camera.h"
 
@@ -71,3 +73,4 @@ using namespace chrono;
 #include "Renders/Context.h"
 #include "Renders/VertexLayout.h"
 #include "Renders/Texture2D.h"
+#include "Renders/SamplerState.h"

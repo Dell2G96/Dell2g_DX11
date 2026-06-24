@@ -21,3 +21,18 @@ struct FVertexTexture
     FVector Position;
     FVector2D Uv;
 };
+
+//////////////////////////////////////////////////////////////////////////////
+struct FViewProjectionData // -> register(b1), 128바이트
+{
+    FMatrix View;
+    FMatrix Projection;
+};
+
+//////////////////////////////////////////////////////////////////////////////
+struct FSamplingData       // -> register(b2), 16바이트 (uint 2개 + 패딩 2개)
+{
+    UINT Address;
+    UINT Filter;
+    UINT Padding[2];
+};

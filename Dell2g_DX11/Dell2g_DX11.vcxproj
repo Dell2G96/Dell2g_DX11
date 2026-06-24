@@ -159,11 +159,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Buffers\ConstantBuffer.cpp" />
     <ClCompile Include="Buffers\IndexBuffer.cpp" />
     <ClCompile Include="Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Demo2.cpp" />
     <ClCompile Include="Demo3.cpp" />
+    <ClCompile Include="DemoHLSL.cpp" />
+    <ClCompile Include="Renders\SamplerState.cpp" />
+    <ClCompile Include="Systems\HLSLShader.cpp" />
     <ClCompile Include="Framework.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -190,12 +194,14 @@
     <ClCompile Include="Viewer\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Buffers\ConstantBuffer.h" />
     <ClInclude Include="Buffers\IndexBuffer.h" />
     <ClInclude Include="Buffers\VertexBuffer.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="Demo.h" />
     <ClInclude Include="Demo2.h" />
     <ClInclude Include="Demo3.h" />
+    <ClInclude Include="DemoHLSL.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Maths\Math.h" />
@@ -207,9 +213,11 @@
     <ClInclude Include="Maths\Vector4.h" />
     <ClInclude Include="Renders\Color.h" />
     <ClInclude Include="Renders\Context.h" />
+    <ClInclude Include="Renders\SamplerState.h" />
     <ClInclude Include="Renders\Texture2D.h" />
     <ClInclude Include="Renders\VertexLayout.h" />
     <ClInclude Include="Systems\D3D.h" />
+    <ClInclude Include="Systems\HLSLShader.h" />
     <ClInclude Include="Systems\Gui.h" />
     <ClInclude Include="Systems\IExecutable.h" />
     <ClInclude Include="Systems\Keyboard.h" />
