@@ -10,8 +10,9 @@ public:
     void Tick() override; 
     void Render() override;
     
-private:
-    UINT Address =0;
+    void Render_Lerp();
+    void Render_SmoothStep();
+    void Render_Step();
     
 private:
     CShader* Shader;
@@ -25,9 +26,8 @@ private:
     CIndexBuffer* IBuffer;
     
 private:
-    FMatrix World;
-    
-    CTexture2D* Texture;
+    FColor Color0 = FColor::Red;
+    FColor Color1 = FColor::Blue;
     
     
 };

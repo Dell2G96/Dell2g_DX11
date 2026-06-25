@@ -5,19 +5,18 @@
 
 #include "Demo.h"
 #include "Demo2.h"
-#include "Demo3.h"
-#include "DemoHLSL.h"
+#include "Demo-HLSL.h"
+#include "Demo2-HLSL.h"
 
 
 
 void CMain::Initialize()
 {
-    // 순수 HLSL 파이프라인 예제. 기존 Effects11 Demo와 화면이 겹치지 않도록
-    // 아래 두 줄을 잠시 주석 처리했다. (원복하려면 주석만 풀면 됨)
-//    Push(new Demo);
-//    Push(new CDemo2);
-    Push(new CDemo3);
-    Push(new CDemoHLSL);
+    
+    //Push(new Demo);
+    //Push(new CDemo2);
+    Push(new Demo_hlsl);
+    Push(new Demo2_hlsl);
 }
 
 void CMain::Destroy()

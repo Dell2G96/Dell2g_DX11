@@ -9,10 +9,14 @@ public:
     void Destroy();
     void Tick();
     void Render();
+    
+    void Render_Lerp();
+    void Render_Lerp2();
+    void Render_Tiling();
 
 private:
-    UINT Filter = 0;
-
+    FVector2D Tiling = FVector2D::One;
+    
 private:
     CShader* Shader;
 
@@ -25,7 +29,6 @@ private:
     CIndexBuffer* IBuffer;
 
 private:
-    FMatrix World;
-
-    CTexture2D* Texture;
+    CTexture2D* Textures[4];
+    ID3D11ShaderResourceView* SRVs[4];
 };
