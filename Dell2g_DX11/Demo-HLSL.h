@@ -11,33 +11,5 @@ public:
     void Render() override;
 
 private:
-    void Render_Lerp();
-    void Render_SmoothStep();
-    void Render_Step();
-
-private:
-    CHLSLShader* Shaders[3] = {};
-
-    UINT VCount = 4;
-    FVertexTexture* Vertices = nullptr;
-    CVertexBuffer* VBuffer = nullptr;
-
-    UINT ICount = 6;
-    UINT* Indices = nullptr;
-    CIndexBuffer* IBuffer = nullptr;
-
-private:
-    struct FBlendColorData
-    {
-        FColor Color0;
-        FColor Color1;
-    };
-
-    FMatrix World;
-    FViewProjectionData VPData;
-    FBlendColorData ColorData;
-
-    CConstantBuffer* WorldBuffer = nullptr;
-    CConstantBuffer* VPBuffer = nullptr;
-    CConstantBuffer* ColorBuffer = nullptr;
+    CLandscapeHLSL* Landscape = nullptr;
 };

@@ -25,6 +25,8 @@ CD3D::CD3D(HWND InHandle, float InWidth, float InHeight)
     CreateDevice();
     CreateSwapChain();
     CreateRTV();
+    CreateDSV();
+    
 }
 
 CD3D::~CD3D()
@@ -33,6 +35,8 @@ CD3D::~CD3D()
     Release(DeviceContext);
     Release(SwapChain);
     Release(RenderTargetView);
+    Release(DSV_Texture);
+    Release(DepthStencilView);
 }
 
 void CD3D::CreateDevice()
@@ -104,8 +108,43 @@ void CD3D::CreateRTV()
     
     Release(backBuffer);
     
-    DeviceContext->OMSetRenderTargets(1, &RenderTargetView, nullptr);
+    //DeviceContext->OMSetRenderTargets(1, &RenderTargetView, nullptr);
 }
+
+void CD3D::CreateDSV()
+{
+    DXGI_FORMAT format = DXGI_FORMAT_D32_FLOAT;
+    
+    //Create Texture
+    {
+        D3D11_TEXTURE2D_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+        desc.Width = (UINT)Width;
+        desc.Height = (UINT)Height;
+        desc.MipLevels = 1;
+        desc.ArraySize = 1;
+        desc.Format = format;
+        desc.SampleDesc.Count = 1;
+        desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+        
+        HRESULT hr = Device->CreateTexture2D(&desc, nullptr, &DSV_Texture);
+    }
+    
+    // Create DSV
+    {
+        D3D11_DEPTH_STENCIL_VIEW_DESC desc;
+        ZeroMemory(&desc, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
+        desc.Format = format;
+        desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+
+        HRESULT hr = Device->CreateDepthStencilView(DSV_Texture, &desc, &DepthStencilView);
+        Check(hr);
+    }
+    
+    DeviceContext->OMSetRenderTargets(1, &RenderTargetView, DepthStencilView );
+}
+
+
 
 
 void CD3D::ResizeScreen(float InWidth, float InHeight)
@@ -124,6 +163,7 @@ void CD3D::ResizeScreen(float InWidth, float InHeight)
     
     // 다시 그린다
     CreateRTV();
+    CreateDSV();
 }
 
 void CD3D::Present()
@@ -135,10 +175,14 @@ void CD3D::Present()
     // Flags 옵션: 0은 기본 출력, DXGI_PRESENT_TEST, DXGI_PRESENT_DO_NOT_WAIT 같은 DXGI_PRESENT 플래그를 사용할 수 있습니다.
 #pragma endregion 
     
-    
 }
 
 void CD3D::ClearRenderTargetView(FColor InColor)
 {
     DeviceContext->ClearRenderTargetView(RenderTargetView, InColor);
+}
+
+void CD3D::ClearDepthStencilView()
+{
+    DeviceContext->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0 );
 }

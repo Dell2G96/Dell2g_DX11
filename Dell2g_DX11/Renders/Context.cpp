@@ -167,6 +167,6 @@ void CContext::ResizeScreen(float InWidth, float InHeight)
     Viewport->Width = InWidth;
     Viewport->Height = InHeight;
     Viewport->MinDepth = 0;
-    Viewport->MaxDepth = 0;
+    Viewport->MaxDepth = 1;
     
 }

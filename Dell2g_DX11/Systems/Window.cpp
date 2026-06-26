@@ -75,6 +75,7 @@ void CWindow::MainRender(class IExecutable* InExecutable)
     
     // 게임 렌더링 처리
     CD3D::Get()->ClearRenderTargetView();      //렌더 타겟을 지울 색상
+    CD3D::Get()->ClearDepthStencilView();
     {
         CContext::Get()->Render();
         InExecutable->Render();

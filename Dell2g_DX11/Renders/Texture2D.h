@@ -10,6 +10,14 @@ public:
     const DirectX::Image* GetImages();
     UINT GetImageCount();
     DirectX::TexMetadata* GetMetadata() {return Metadata;}
+
+public:
+    void GetPixels(vector<FColor>& OutPixels);
+    
+public:
+    UINT GetWidth() {return Metadata->width;}
+    UINT GetHeight() {return Metadata->height;}
+    
     
 private:
     wstring File;
@@ -24,13 +32,16 @@ private:
 class CTexture2D
 {
 public:
-    CTexture2D(wstring InFile);
-    CTexture2D(CShader* InShader, string InParamName, wstring InFile);
+	CTexture2D(wstring InFile, bool bDefaultPath = true);
+    CTexture2D(CShader* InShader, string InParamName, wstring InFile, bool bDefaultPath = true);
     ~CTexture2D();
     
     void Render();
 public:
     operator ID3D11ShaderResourceView* ();
+    
+public:
+    CImage* GetImage() {return Image;}
     
 private:
     CImage* Image;

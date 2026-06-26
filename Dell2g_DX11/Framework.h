@@ -74,3 +74,6 @@ using namespace chrono;
 #include "Renders/VertexLayout.h"
 #include "Renders/Texture2D.h"
 #include "Renders/SamplerState.h"
+
+#include "Enviornment/Landscape.h"
+#include "Enviornment/Landscape-HLSL.h"

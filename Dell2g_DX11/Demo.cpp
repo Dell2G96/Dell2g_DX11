@@ -3,43 +3,48 @@
 
 void Demo::Initialize()
 {
-    CContext::Get()->GetCamera()->SetPosition(FVector(0,0,-4));
-    CContext::Get()->SetCameraMoveSpeed(1.0f);
-    CContext::Get()->SetCameraRotaionSpeed(0.f);
+    CContext::Get()->GetCamera()->SetPosition(FVector(0,5.f,-10));
     
-    Shader = new CShader(L"13_Blending.fx");
+    FVertexColor vertices[8];
     
-    // 버텍스 버퍼 설정
-    Vertices = new FVertexTexture[VCount];
+    vertices[0].Position = FVector(0, 0, 0);
+    vertices[1].Position = FVector(0, 2, 0);
+    vertices[2].Position = FVector(2, 0, 0);
+    vertices[3].Position = FVector(2, 2, 0);
 
-    Vertices[0].Position = FVector(-0.5f, -0.5f, 0.0f);
-    Vertices[1].Position = FVector(-0.5f, +0.5f, 0.0f);
-    Vertices[2].Position = FVector(+0.5f, -0.5f, 0.0f);
-    Vertices[3].Position = FVector(+0.5f, +0.5f, 0.0f);
-
-    Vertices[0].Uv = FVector2D(0.0f, 1.0f);
-    Vertices[1].Uv = FVector2D(0.0f, 0.0f);
-    Vertices[2].Uv = FVector2D(1.0f, 1.0f);
-    Vertices[3].Uv = FVector2D(1.0f, 0.0f);
+    vertices[4].Position = FVector(1, 1, 1);
+    vertices[5].Position = FVector(1, 3, 1);
+    vertices[6].Position = FVector(3, 1, 1);
+    vertices[7].Position = FVector(3, 3, 1);
     
-    VBuffer = new CVertexBuffer(Vertices,VCount, sizeof(FVertexTexture));
+    for (int i =0; i < 4; i++)
+    {
+        vertices[i].Color = FColor::Red;
+        vertices[i+4].Color = FColor::Green;
+    }
     
+    UINT indices[12] =
+    {
+        0, 1, 2, 2, 1, 3,
+        4, 5, 6, 6, 5, 7,
+    };
     
-    // 인덱서 버퍼 설정
-    Indices = new UINT[ICount]{0,1,2, 2,1,3};
-    IBuffer = new CIndexBuffer(Indices, ICount);
+    VBuffer = new CVertexBuffer(vertices, 8, sizeof(FVertexColor));
+    IBuffer = new CIndexBuffer(indices, 12);
+    
+    Shader = new CShader(L"15_DepthStencilView.fx");
+    
+    Landscape = new CLandscape();
     
 }
 
 void Demo::Destroy()
 {
     Delete(Shader);
-    
-    DeleteArray(Vertices);
     Delete(VBuffer);
-    
-    DeleteArray(Indices);
     Delete(IBuffer);
+
+    Delete(Landscape);
 }
 
 void Demo::Tick()
@@ -51,55 +56,27 @@ void Demo::Tick()
     ImGui::Text("Delta : %s", CMouse::Get()->GetDelta().ToString().c_str());
 #pragma endregion
     
-    ImGui::ColorEdit3("Color0", Color0);
-    ImGui::ColorEdit3("Color1", Color1);
+    FMatrix world = FMatrix::Identity;
+    Shader->AsMatrix("World")->SetMatrix(world);
     
-}
-
-void Demo::Render()
-{
     FMatrix view = CContext::Get()->GetView();
     Shader->AsMatrix("View")->SetMatrix(view);
     
     FMatrix projection = CContext::Get()->GetProjection();
     Shader->AsMatrix("Projection")->SetMatrix(projection);
     
-    Shader->AsVector("Color0")->SetFloatVector(Color0);
-    Shader->AsVector("Color1")->SetFloatVector(Color1);
+    Landscape->Tick();
+    
+}
 
+void Demo::Render()
+{
+   Landscape->Render();
+    
     VBuffer->Render();
     IBuffer->Render();
     
-    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-    Render_Lerp();
-    Render_SmoothStep();
-    Render_Step();
-}
-
-void Demo::Render_Lerp()
-{
-    FMatrix world = FMatrix::CreateTranslation(FVector(-0.5f, +1.f, 0.0f ));
-    Shader->AsMatrix("World")->SetMatrix(world);
+    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     
-    Shader->SetPassNumber(0);
-    Shader->DrawIndexed(ICount);
-}
-
-void Demo::Render_SmoothStep()
-{
-    FMatrix world = FMatrix::CreateTranslation(FVector(-0.5f, 0.0f, 0.0f));
-    Shader->AsMatrix("World")->SetMatrix(world);
-
-    Shader->SetPassNumber(1);
-    Shader->DrawIndexed(ICount);
-}
-
-void Demo::Render_Step()
-{
-    FMatrix world = FMatrix::CreateTranslation(FVector(-0.5f, -1.0f, 0.0f));
-    Shader->AsMatrix("World")->SetMatrix(world);
-
-    Shader->SetPassNumber(2);
-    Shader->DrawIndexed(ICount);
+    Shader->DrawIndexed(12);
 }

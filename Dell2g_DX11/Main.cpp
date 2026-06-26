@@ -16,7 +16,7 @@ void CMain::Initialize()
     //Push(new Demo);
     //Push(new CDemo2);
     Push(new Demo_hlsl);
-    Push(new Demo2_hlsl);
+    //Push(new Demo2_hlsl);
 }
 
 void CMain::Destroy()

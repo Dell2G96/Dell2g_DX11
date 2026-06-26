@@ -166,6 +166,8 @@
     <ClCompile Include="Demo2.cpp" />
     <ClCompile Include="Demo-HLSL.cpp" />
     <ClCompile Include="Demo2-HLSL.cpp" />
+    <ClCompile Include="Enviornment\Landscape.cpp" />
+    <ClCompile Include="Enviornment\Landscape-HLSL.cpp" />
     <ClCompile Include="Renders\SamplerState.cpp" />
     <ClCompile Include="Systems\HLSLShader.cpp" />
     <ClCompile Include="Framework.cpp">
@@ -202,6 +204,8 @@
     <ClInclude Include="Demo2.h" />
     <ClInclude Include="Demo-HLSL.h" />
     <ClInclude Include="Demo2-HLSL.h" />
+    <ClInclude Include="Enviornment\Landscape.h" />
+    <ClInclude Include="Enviornment\Landscape-HLSL.h" />
     <ClInclude Include="Framework.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Maths\Math.h" />

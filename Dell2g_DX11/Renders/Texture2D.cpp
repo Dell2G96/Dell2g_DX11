@@ -38,14 +38,43 @@ UINT CImage::GetImageCount()
     return SImage->GetImageCount();
 }
 
-CTexture2D::CTexture2D(wstring InFile)
-    :CTexture2D(nullptr, "", InFile)
+void CImage::GetPixels(vector<FColor>& OutPixels)
+{
+    DXGI_FORMAT format = Metadata->format;
+    
+    const Image* image = SImage->GetImage(0,0,0);
+    assert(image != nullptr);
+    
+    UINT count = 0;
+    for (UINT y = 0; y < image->height; y++)
+    {
+        BYTE* row = image->pixels + (y * image->rowPitch);
+        
+        for (UINT x = 0; x < image->width; x++)
+        {
+            BYTE* pixel = row + x * 4;
+            
+            float r = *(pixel + 0) / 256.0f;
+            float g = *(pixel + 1) / 256.0f;
+            float b = *(pixel + 2) / 256.0f;
+            float a = *(pixel + 3) / 256.0f;
+            
+            OutPixels.push_back(FColor(r, g, b, a));
+        }
+    }
+}
+
+CTexture2D::CTexture2D(wstring InFile, bool bDefaultPath)
+    :CTexture2D(nullptr, "", InFile, bDefaultPath)
 {
 }
 
-CTexture2D::CTexture2D(CShader* InShader, string InParamName, wstring InFile)
+CTexture2D::CTexture2D(CShader* InShader, string InParamName, wstring InFile, bool bDefaultPath)
     :Shader(InShader)
 {
+    if (bDefaultPath)
+        InFile = L"../_Textures/" + InFile;
+    
     Image = new CImage(InFile);
     
     HRESULT hr = CreateShaderResourceView(CD3D::Get()->GetDevice(), Image->GetImages(), Image->GetImageCount(), *Image->GetMetadata(), &SRV);

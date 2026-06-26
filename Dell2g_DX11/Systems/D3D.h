@@ -22,6 +22,7 @@ private:
     void CreateDevice(); 
     void CreateSwapChain(); 
     void CreateRTV(); 
+    void CreateDSV(); 
     
     void ResizeScreen(float InWidth, float InHeight);
 
@@ -30,6 +31,7 @@ private:
     
 public:
     void ClearRenderTargetView(FColor InColor = FColor::Black);
+    void ClearDepthStencilView();
     
 public:
     HWND GetHandle() {return Handle;}
@@ -49,6 +51,9 @@ public:
     
     ID3D11RenderTargetView* RenderTargetView;
     D3D11_VIEWPORT* Viewport;
+    
+    ID3D11Texture2D* DSV_Texture;
+    ID3D11DepthStencilView* DepthStencilView;
     
     
 };
