@@ -125,6 +125,35 @@ void CContext::Render()
     
 }
 
+FVector2D CContext::WorldToScreen(const FVector& InWorld, bool& OutBehind)
+{
+    OutBehind = false;
+
+    // View * Projection (호출측이 이미 월드 좌표를 넘기므로 World 는 곱하지 않음)
+    FMatrix vp = GetView() * GetProjection();
+
+    // 동차 좌표의 w 성분을 직접 계산해서 카메라 뒤 여부를 판정한다.
+    // (TransformCoord 는 w 로 나눈 뒤 w 부호를 버리므로 뒤 판정에 쓸 수 없음)
+    float w = (vp.M14 * InWorld.X) + (vp.M24 * InWorld.Y) + (vp.M34 * InWorld.Z) + vp.M44;
+    if (w <= 0.0f)
+    {
+        OutBehind = true;
+        return FVector2D(0.0f, 0.0f);
+    }
+
+    // TransformCoord = 변환 + 원근분할(w 나누기) → NDC(-1 ~ +1)
+    FVector ndc = FVector::TransformCoord(InWorld, vp);
+
+    float width = CD3D::Get()->GetWidth();
+    float height = CD3D::Get()->GetHeight();
+
+    // NDC(-1~+1) → 화면 픽셀. Y 는 위아래가 뒤집힌다.
+    float screenX = (ndc.X * 0.5f + 0.5f) * width;
+    float screenY = (1.0f - (ndc.Y * 0.5f + 0.5f)) * height;
+
+    return FVector2D(screenX, screenY);
+}
+
 void CContext::ResizeScreen(float InWidth, float InHeight)
 {
     float aspect = InWidth / InHeight;

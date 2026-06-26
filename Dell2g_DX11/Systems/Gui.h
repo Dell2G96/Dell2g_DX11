@@ -28,6 +28,10 @@ private:
 public:
     void RenderText(float x, float y , float r , float g , float b, const string& content);
     void RenderText(float x, float y , float r , float g , float b, float a, const string& content);
+
+    // 월드 좌표 버전: 3D 도형 위에 텍스트를 띄울 때 사용한다.
+    // 내부에서 화면 좌표로 변환하며, 카메라 뒤에 있으면 자동으로 그리지 않는다.
+    void RenderText(const FVector& InWorld, float r, float g, float b, const string& InText);
     
 private:
     struct FGuiText

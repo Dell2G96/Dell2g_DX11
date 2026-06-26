@@ -3,9 +3,9 @@
 
 void Demo_hlsl::Initialize()
 {
-    CContext::Get()->GetCamera()->SetPosition(FVector(0, 0, -4));
-    CContext::Get()->SetCameraMoveSpeed(1.0f);
-    CContext::Get()->SetCameraRotaionSpeed(0.f);
+    // CContext::Get()->GetCamera()->SetPosition(FVector(0, 0, -6));
+    // CContext::Get()->SetCameraMoveSpeed(1.0f);
+    // CContext::Get()->SetCameraRotaionSpeed(0.f);
 
     Shaders[0] = new CHLSLShader(L"13_Blending.hlsl", "VS", "PS_Lerp");
     Shaders[1] = new CHLSLShader(L"13_Blending.hlsl", "VS", "PS_SmoothStep");
@@ -60,6 +60,11 @@ void Demo_hlsl::Tick()
 
     ImGui::ColorEdit3("HLSL Color0", ColorData.Color0);
     ImGui::ColorEdit3("HLSL Color1", ColorData.Color1);
+
+    // 각 도형 위에 기법 이름 표시 (월드 좌표를 넘기면 내부에서 화면 좌표로 변환)
+    CGui::Get()->RenderText(FVector(-1.f, +1.5f + 0.6f, 0.0f), 1, 1, 1, "Lerp");
+    CGui::Get()->RenderText(FVector(-1.f, 0.0f + 0.6f, 0.0f), 1, 1, 1, "SmoothStep");
+    CGui::Get()->RenderText(FVector(-1.f, -1.5f + 0.6f, 0.0f), 1, 1, 1, "Step");
 }
 
 void Demo_hlsl::Render()
@@ -86,7 +91,7 @@ void Demo_hlsl::Render()
 
 void Demo_hlsl::Render_Lerp()
 {
-    World = FMatrix::CreateTranslation(FVector(-0.5f, +1.0f, 0.0f));
+    World = FMatrix::CreateTranslation(FVector(-0.5f, +1.5f, 0.0f));
     WorldBuffer->Update();
     WorldBuffer->BindToVS(0);
 
@@ -106,7 +111,7 @@ void Demo_hlsl::Render_SmoothStep()
 
 void Demo_hlsl::Render_Step()
 {
-    World = FMatrix::CreateTranslation(FVector(-0.5f, -1.0f, 0.0f));
+    World = FMatrix::CreateTranslation(FVector(-0.5f, -1.5f, 0.0f));
     WorldBuffer->Update();
     WorldBuffer->BindToVS(0);
 

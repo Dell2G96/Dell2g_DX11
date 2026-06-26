@@ -107,6 +107,15 @@ void CGui::RenderText(float x, float y, float r, float g, float b, float a, cons
     text.Position = ImVec2(x, y);
     text.Color = ImColor(r,g,b,a);
     text.Content = content;
-    
+
     Contents.push_back(text);
+}
+
+void CGui::RenderText(const FVector& InWorld, float r, float g, float b, const string& InText)
+{
+    bool behind = false;
+    FVector2D screen = CContext::Get()->WorldToScreen(InWorld, behind);
+    if (behind) return;                 // 카메라 뒤면 그리지 않음
+
+    RenderText(screen.X, screen.Y, r, g, b, InText);
 }

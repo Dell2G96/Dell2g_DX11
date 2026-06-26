@@ -3,7 +3,7 @@
 
 void Demo2_hlsl::Initialize()
 {
-    CContext::Get()->GetCamera()->SetPosition(FVector(0, 0, -4));
+    CContext::Get()->GetCamera()->SetPosition(FVector(0, 0, -6));
     CContext::Get()->SetCameraMoveSpeed(1.0f);
     CContext::Get()->SetCameraRotaionSpeed(0.f);
 
@@ -75,6 +75,11 @@ void Demo2_hlsl::Tick()
 {
     ImGui::InputFloat("HLSL TilingX", &Tiling.X, 1.0f);
     ImGui::InputFloat("HLSL TilingY", &Tiling.Y, 1.0f);
+
+    // 각 도형 위에 기법 이름 표시 (월드 좌표를 넘기면 내부에서 화면 좌표로 변환)
+    CGui::Get()->RenderText(FVector(+0.5f, +1.5f + 0.6f, 0.0f), 1, 1, 1, "Lerp_UV");
+    CGui::Get()->RenderText(FVector(+0.5f, 0.0f + 0.6f, 0.0f), 1, 1, 1, "Lerp_UV2");
+    CGui::Get()->RenderText(FVector(+0.5f, -1.5f + 0.6f, 0.0f), 1, 1, 1, "Lerp_Tiling");
 }
 
 void Demo2_hlsl::Render()
@@ -105,7 +110,7 @@ void Demo2_hlsl::Render()
 
 void Demo2_hlsl::Render_Lerp()
 {
-    World = FMatrix::CreateTranslation(FVector(+0.5f, +1.0f, 0.0f));
+    World = FMatrix::CreateTranslation(FVector(+1.f, +1.5f, 0.0f));
     WorldBuffer->Update();
     WorldBuffer->BindToVS(0);
 
@@ -115,7 +120,7 @@ void Demo2_hlsl::Render_Lerp()
 
 void Demo2_hlsl::Render_Lerp2()
 {
-    World = FMatrix::CreateTranslation(FVector(+0.5f, 0.0f, 0.0f));
+    World = FMatrix::CreateTranslation(FVector(+1.f, 0.0f, 0.0f));
     WorldBuffer->Update();
     WorldBuffer->BindToVS(0);
 
@@ -125,7 +130,7 @@ void Demo2_hlsl::Render_Lerp2()
 
 void Demo2_hlsl::Render_Tiling()
 {
-    World = FMatrix::CreateTranslation(FVector(+0.5f, -1.0f, 0.0f));
+    World = FMatrix::CreateTranslation(FVector(+1.f, -1.5f, 0.0f));
     WorldBuffer->Update();
     WorldBuffer->BindToVS(0);
 

@@ -27,6 +27,11 @@ private:
 public:
     const FMatrix& GetView(){return Camera->GetViewMatrix();}
     const FMatrix& GetProjection() {return Projection;}
+
+public:
+    // 월드 좌표 한 점을 화면 픽셀 좌표(ImGui RenderText용)로 변환한다.
+    // OutBehind 가 true 면 카메라 뒤에 있는 점이므로 그리지 말 것.
+    FVector2D WorldToScreen(const FVector& InWorld, bool& OutBehind);
     
 public:
     CCamera* GetCamera() {return Camera;}
