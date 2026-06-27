@@ -10,17 +10,10 @@ public:
     void Tick() override; 
     void Render() override;
     
-    // void Render_Lerp();
-    // void Render_SmoothStep();
-    // void Render_Step();
-    
-private:
-    CShader* Shader;
-    
-    CVertexBuffer* VBuffer;
-    CIndexBuffer* IBuffer;
+
 
 private:
+    CLine3D* Line3D;
     CLandscape* Landscape;
     
     
