@@ -15,6 +15,8 @@ public:
 public:
     void Add(const FVector& InStart, const FVector& InEnd, const FColor& InColor);
     void Add(const FVector& InStart, const FColor& InStartColor ,const FVector& InEnd, const FColor& InEndColor);
+    void Add(const FVector& InStart, const FVector& InDirection, float InLength, const FColor& InColor);
+    void Add(const FVector& InStart, const FColor& InStartColor, const FVector& InDirection, float InLength, const FColor& InEndColor);
     
 private:
     CShader* Shader;

@@ -39,7 +39,7 @@ void CLine3D::Render()
         return;
     VBuffer->Map();
     VBuffer->Render();
-    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP);
+    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_LINELIST);
     
     Shader->Draw(DrawCount);
     
@@ -68,4 +68,18 @@ void CLine3D::Add(const FVector& InStart, const FColor& InStartColor, const FVec
     
     Vertices[DrawCount].Color = InEndColor;
     Vertices[DrawCount++].Position = InEnd;
+}
+
+void CLine3D::Add(const FVector& InStart, const FVector& InDirection, float InLength, const FColor& InColor)
+{
+    Add(InStart, InColor, InDirection, InLength, InColor);
+
+}
+
+void CLine3D::Add(const FVector& InStart, const FColor& InStartColor, const FVector& InDirection, float InLength,
+    const FColor& InEndColor)
+{
+    FVector end = InStart + FVector::Normalize(InDirection) * InLength;
+
+    Add(InStart, InStartColor, end, InEndColor);
 }

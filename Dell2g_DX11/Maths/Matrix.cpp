@@ -548,10 +548,10 @@ FMatrix FMatrix::CreateRotationY(float InValue)
 
 	FMatrix matrix;
 
-	matrix.M11 = val1;  matrix.M12 = 0.0f; matrix.M13 = val2;  matrix.M14 = 0.0f;
-	matrix.M21 = 0.0f;  matrix.M22 = 1.0f; matrix.M23 = 0.0f;  matrix.M24 = 0.0f;
-	matrix.M31 = -val2; matrix.M32 = 0.0f; matrix.M33 = val1;  matrix.M34 = 0.0f;
-	matrix.M41 = 0.0f;  matrix.M42 = 0.0f; matrix.M43 = 0.0f;  matrix.M44 = 1.0f;
+	matrix.M11 = val1; matrix.M12 = 0.0f; matrix.M13 = -val2; matrix.M14 = 0.0f;
+	matrix.M21 = 0.0f; matrix.M22 = 1.0f; matrix.M23 = 0.0f;  matrix.M24 = 0.0f;
+	matrix.M31 = val2; matrix.M32 = 0.0f; matrix.M33 = val1;  matrix.M34 = 0.0f;
+	matrix.M41 = 0.0f; matrix.M42 = 0.0f; matrix.M43 = 0.0f;  matrix.M44 = 1.0f;
 
 	return matrix;
 }

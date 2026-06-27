@@ -16,5 +16,9 @@ private:
     CLine3D* Line3D;
     CLandscape* Landscape;
     
+private:
+    float Rotation;
+    float LineLength = 1.0f;
+    
     
 };
