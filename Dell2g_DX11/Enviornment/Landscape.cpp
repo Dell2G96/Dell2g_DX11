@@ -13,7 +13,7 @@ CLandscape::CLandscape()
     
     World = FMatrix::Identity;
     
-	Texture = new CTexture2D(Shader, "Map", L"Landscape/HighMap.png");
+	Texture = new CTexture2D(Shader, "Map", L"Checker.png");
 }
 
 CLandscape::~CLandscape()
@@ -77,7 +77,8 @@ void CLandscape::CreateVertexData()
 			UINT index = Width * z + x;
 			
 			Vertices[index].Position.X = (float)x;
-			Vertices[index].Position.Y = pixels[index].R * MaxHeight;
+			//Vertices[index].Position.Y = pixels[index].R * MaxHeight;
+			Vertices[index].Position.Y = -0.1f;
 			Vertices[index].Position.Z = (float)z;
 			
 			Vertices[index].Uv.X = (float)x / (float)Width;
