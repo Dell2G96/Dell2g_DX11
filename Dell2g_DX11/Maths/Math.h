@@ -16,7 +16,7 @@ public:
 	static float ToDegrees(float InRadians);
 	static float ToRadians(float InDegrees);
 	static float WrapAngle(float InAngle);
-
+	
 	static bool IsZero(float InValue);
 	static bool IsOne(float InValue);
 

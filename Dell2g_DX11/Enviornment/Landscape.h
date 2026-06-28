@@ -2,6 +2,9 @@
 
 class CLandscape
 {
+private:
+    typedef FVertexTextureNormal FVertexTerrain;
+    
 public:
     CLandscape();
     ~CLandscape();
@@ -12,11 +15,13 @@ public:
 private:
     void CreateVertexData();
     void CreateIndexedData();
+    void CreateNormalVector();
     void CreateBuffer();
     
 private:
     CShader* Shader;
     UINT Pass =0;
+    
 private:
     CTexture2D* HeightMap;
     
@@ -26,7 +31,7 @@ private:
     UINT Width, Height;
     
     UINT VCount;
-    FVertexTexture* Vertices;
+    FVertexTerrain* Vertices;
     
     UINT ICount;
     UINT* Indices;
@@ -39,6 +44,10 @@ private:
     
 private:
     CTexture2D* Texture;
+    
+private:
+    CLine3D* Line3D;
+    FVector LightDirection = FVector(1.0f, 0.0f,0.0f);
     
     
 };

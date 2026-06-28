@@ -91,32 +91,16 @@ float FMath::SmootherStep(float InAmount)
 
 float FMath::ToDegrees(float InRadians)
 {
-	return InRadians * 57.2957764f;
+	return InRadians * 57.2957764f; //180 / pi
 }
 
 float FMath::ToRadians(float InDegrees)
 {
-	return InDegrees * 0.0174532924f;
+	return InDegrees * 0.0174532924f; //pi / 180
 }
 
 float FMath::WrapAngle(float InAngle)
 {
-#pragma region 기존 함수 라디안 기반
-	// remainderf : 몫을 가장 가까운 정수로 반올림하여 나머지를 구한다
-	// InAngle = remainderf(InAngle, TwoPi);
-	//
-	// if (InAngle <= -Pi)
-	// {
-	// 	InAngle += TwoPi;
-	// }
-	// else if (InAngle > Pi)
-	// {
-	// 	InAngle -= TwoPi;
-	// }
-	//
-	// return InAngle;
-#pragma endregion  
-	// fomdf : 나눗셈의 몫을 0을 향해 버림하여 나머지를 구한다
 	InAngle = fmodf(InAngle, 360.0f);
 
 	if (InAngle <= -180.0f)

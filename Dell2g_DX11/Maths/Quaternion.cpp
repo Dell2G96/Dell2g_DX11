@@ -164,9 +164,9 @@ std::string FQuaternion::ToString()
 	std::string temp = "";
 
 	temp += std::to_string(X);
-	temp += "," + std::to_string(Y);
-	temp += "," + std::to_string(Z);
-	temp += "," + std::to_string(W);
+	temp += ",:" + std::to_string(Y);
+	temp += ",:" + std::to_string(Z);
+	temp += ",:" + std::to_string(W);
 
 	return temp;
 }
@@ -363,15 +363,15 @@ FQuaternion FQuaternion::CreateFromYawPitchRoll(float InYaw, float InPitch, floa
 	float value4 = sinf(value3);
 	float value5 = cosf(value3);
 
-	float value6 = -InYaw * 0.5f;
+	float value6 = InYaw * 0.5f;
 	float value7 = sinf(value6);
 	float value8 = cosf(value6);
 
 	FQuaternion quaternion;
-	quaternion.X = value8 * value4 * value1 - value7 * value5 * value2;
-	quaternion.Y = value7 * value5 * value1 + value8 * value4 * value2;
-	quaternion.Z = value8 * value5 * value1 + value7 * value4 * value2;
-	quaternion.W = value8 * value5 * value2 - value7 * value4 * value1;
+	quaternion.X = value8 * value4 * value2 + value7 * value5 * value1;
+	quaternion.Y = value7 * value5 * value2 - value8 * value4 * value1;
+	quaternion.Z = value8 * value5 * value1 - value7 * value4 * value2;
+	quaternion.W = value8 * value5 * value2 + value7 * value4 * value1;
 
 	return quaternion;
 }
@@ -387,9 +387,9 @@ FQuaternion FQuaternion::CreateFromRotationMatrix(FMatrix InMatrix)
 		q.W = value * 0.5f;
 		value = 0.5f / value;
 
-		q.X = (InMatrix.M32 - InMatrix.M23) * value;
-		q.Y = (InMatrix.M13 - InMatrix.M31) * value;
-		q.Z = (InMatrix.M21 - InMatrix.M12) * value;
+		q.X = (InMatrix.M23 - InMatrix.M32) * value;
+		q.Y = (InMatrix.M31 - InMatrix.M13) * value;
+		q.Z = (InMatrix.M12 - InMatrix.M21) * value;
 	}
 	else if (InMatrix.M11 >= InMatrix.M22 && InMatrix.M11 >= InMatrix.M33)
 	{
@@ -399,7 +399,7 @@ FQuaternion FQuaternion::CreateFromRotationMatrix(FMatrix InMatrix)
 		q.X = 0.5f * value1;
 		q.Y = (InMatrix.M12 + InMatrix.M21) * value2;
 		q.Z = (InMatrix.M13 + InMatrix.M31) * value2;
-		q.W = (InMatrix.M32 - InMatrix.M23) * value2;
+		q.W = (InMatrix.M23 - InMatrix.M32) * value2;
 	}
 	else if (InMatrix.M22 <= InMatrix.M33)
 	{
@@ -409,7 +409,7 @@ FQuaternion FQuaternion::CreateFromRotationMatrix(FMatrix InMatrix)
 		q.X = (InMatrix.M31 + InMatrix.M13) * value4;
 		q.Y = (InMatrix.M32 + InMatrix.M23) * value4;
 		q.Z = 0.5f * value3;
-		q.W = (InMatrix.M21 - InMatrix.M12) * value4;
+		q.W = (InMatrix.M12 - InMatrix.M21) * value4;
 	}
 	else
 	{
@@ -419,7 +419,7 @@ FQuaternion FQuaternion::CreateFromRotationMatrix(FMatrix InMatrix)
 		q.X = (InMatrix.M21 + InMatrix.M12) * value6;
 		q.Y = 0.5f * value5;
 		q.Z = (InMatrix.M32 + InMatrix.M23) * value6;
-		q.W = (InMatrix.M13 - InMatrix.M31) * value6;
+		q.W = (InMatrix.M31 - InMatrix.M13) * value6;
 	}
 
 	return q;

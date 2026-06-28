@@ -4,8 +4,8 @@
 const FMatrix FMatrix::Identity = FMatrix
 (
 	1.0f, 0.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f, 0.0f, 
-	0.0f, 0.0f, 1.0f, 0.0f, 
+	0.0f, 1.0f, 0.0f, 0.0f,
+	0.0f, 0.0f, 1.0f, 0.0f,
 	0.0f, 0.0f, 0.0f, 1.0f
 );
 
@@ -534,8 +534,8 @@ FMatrix FMatrix::CreateRotationX(float InValue)
 	FMatrix matrix;
 
 	matrix.M11 = 1.0f; matrix.M12 = 0.0f;  matrix.M13 = 0.0f; matrix.M14 = 0.0f;
-	matrix.M21 = 0.0f; matrix.M22 = val1;  matrix.M23 = -val2; matrix.M24 = 0.0f;
-	matrix.M31 = 0.0f; matrix.M32 = val2;  matrix.M33 = val1; matrix.M34 = 0.0f;
+	matrix.M21 = 0.0f; matrix.M22 = val1;  matrix.M23 = val2; matrix.M24 = 0.0f;
+	matrix.M31 = 0.0f; matrix.M32 = -val2; matrix.M33 = val1; matrix.M34 = 0.0f;
 	matrix.M41 = 0.0f; matrix.M42 = 0.0f;  matrix.M43 = 0.0f; matrix.M44 = 1.0f;
 
 	return matrix;
@@ -556,27 +556,26 @@ FMatrix FMatrix::CreateRotationY(float InValue)
 	return matrix;
 }
 
-FMatrix FMatrix::CreateRotationZ(float radians)
+FMatrix FMatrix::CreateRotationZ(float InValue)
 {
-	float val1 = cosf(radians);
-	float val2 = sinf(radians);
+	float val1 = cosf(InValue);
+	float val2 = sinf(InValue);
 
 	FMatrix matrix;
-	matrix.M11 = val1; matrix.M12 = -val2; matrix.M13 = 0.0f; matrix.M14 = 0.0f;
-	matrix.M21 = val2; matrix.M22 = val1; matrix.M23 = 0.0f; matrix.M24 = 0.0f;
-	matrix.M31 = 0.0f; matrix.M32 = 0.0f; matrix.M33 = 1.0f; matrix.M34 = 0.0f;
-	matrix.M41 = 0.0f; matrix.M42 = 0.0f; matrix.M43 = 0.0f; matrix.M44 = 1.0f;
+	matrix.M11 = val1;  matrix.M12 = val2; matrix.M13 = 0.0f; matrix.M14 = 0.0f;
+	matrix.M21 = -val2; matrix.M22 = val1; matrix.M23 = 0.0f; matrix.M24 = 0.0f;
+	matrix.M31 = 0.0f;  matrix.M32 = 0.0f; matrix.M33 = 1.0f; matrix.M34 = 0.0f;
+	matrix.M41 = 0.0f;  matrix.M42 = 0.0f; matrix.M43 = 0.0f; matrix.M44 = 1.0f;
 	return matrix;
 }
 
 FMatrix FMatrix::CreateFromAxisAngle(FVector InAxis, float InAngle)
 {
-	FMatrix matrix;
 	float x = InAxis.X;
 	float y = InAxis.Y;
 	float z = InAxis.Z;
 
-	float value = sinf(InAngle);
+	float value = -sinf(InAngle);
 	float value1 = cosf(InAngle);
 	float value2 = x * x;
 	float value3 = y * y;
@@ -585,6 +584,7 @@ FMatrix FMatrix::CreateFromAxisAngle(FVector InAxis, float InAngle)
 	float value6 = x * z;
 	float value7 = y * z;
 
+	FMatrix matrix;
 	matrix.M11 = value2 + value1 * (1.0f - value2);
 	matrix.M12 = value5 - value1 * value5 - value * z;
 	matrix.M13 = value6 - value1 * value6 + value * y;
@@ -604,6 +604,83 @@ FMatrix FMatrix::CreateFromAxisAngle(FVector InAxis, float InAngle)
 	matrix.M42 = 0.0f;
 	matrix.M43 = 0.0f;
 	matrix.M44 = 1.0f;
+	return matrix;
+}
+
+FMatrix FMatrix::CreateFromQuaternion(FQuaternion InValue)
+{
+	float x = InValue.X;
+	float y = InValue.Y;
+	float z = InValue.Z;
+	float w = InValue.W;
+
+	float xx = x * x;
+	float yy = y * y;
+	float zz = z * z;
+
+	float xy = x * y;
+	float xz = x * z;
+	float yz = y * z;
+	float xw = x * w;
+	float yw = y * w;
+	float zw = z * w;
+
+	FMatrix matrix;
+	matrix.M11 = 1.0f - 2.0f * (yy + zz);
+	matrix.M12 = 2.0f * (xy + zw);
+	matrix.M13 = 2.0f * (xz - yw);
+	matrix.M14 = 0.0f;
+
+	matrix.M21 = 2.0f * (xy - zw);
+	matrix.M22 = 1.0f - 2.0f * (xx + zz);
+	matrix.M23 = 2.0f * (yz + xw);
+	matrix.M24 = 0.0f;
+
+	matrix.M31 = 2.0f * (xz + yw);
+	matrix.M32 = 2.0f * (yz - xw);
+	matrix.M33 = 1.0f - 2.0f * (xx + yy);
+	matrix.M34 = 0.0f;
+
+	matrix.M41 = 0.0f;
+	matrix.M42 = 0.0f;
+	matrix.M43 = 0.0f;
+	matrix.M44 = 1.0f;
+
+	return matrix;
+}
+
+FMatrix FMatrix::CreateFromYawPitchRoll(float InYaw, float InPitch, float InRoll)
+{
+	float cp = cosf(InPitch);
+	float sp = sinf(InPitch);
+
+	float cy = cosf(InYaw);
+	float sy = sinf(InYaw);
+
+	float cr = cosf(InRoll);
+	float sr = sinf(InRoll);
+
+	FMatrix matrix;
+	matrix.M11 = cr * cy + sr * sp * sy;
+	matrix.M12 = sr * cp;
+	matrix.M13 = sr * sp * cy - cr * sy;
+	matrix.M14 = 0.0f;
+
+	matrix.M21 = cr * sp * sy - sr * cy;
+	matrix.M22 = cr * cp;
+	matrix.M23 = sr * sy + cr * sp * cy;
+	matrix.M24 = 0.0f;
+
+	matrix.M31 = cp * sy;
+	matrix.M32 = -sp;
+	matrix.M33 = cp * cy;
+	matrix.M34 = 0.0f;
+
+	matrix.M41 = 0.0f;
+	matrix.M42 = 0.0f;
+	matrix.M43 = 0.0f;
+	matrix.M44 = 1.0f;
+
 	return matrix;
 }
 
@@ -627,7 +704,7 @@ FMatrix FMatrix::CreatePerspective(float InWidth, float InHeight, float InNear, 
 
 	matrix.M41 = 0.0f;
 	matrix.M42 = 0.0f;
-	matrix.M43 = InNear * InFar / (InNear - InFar);
+	matrix.M43 = -InNear * InFar / (InNear - InFar);
 	matrix.M44 = 0.0f;
 
 	return matrix;
@@ -705,50 +782,6 @@ FMatrix FMatrix::CreateLookAt(FVector InPosition, FVector InTarget, FVector InUp
 	matrix.M44 = 1.0f;
 
 	return matrix;
-}
-
-FMatrix FMatrix::CreateFromQuaternion(FQuaternion InValue)
-{
-	float x = InValue.X * InValue.X;
-	float y = InValue.Y * InValue.Y;
-	float z = InValue.Z * InValue.Z;
-	float value = InValue.X * InValue.Y;
-	float z1 = InValue.Z * InValue.W;
-	float value1 = InValue.Z * InValue.X;
-	float y1 = InValue.Y * InValue.W;
-	float y2 = InValue.Y * InValue.Z;
-	float x1 = InValue.X * InValue.W;
-
-	FMatrix matrix;
-	matrix.M11 = 1.0f - 2.0f * (y + z);
-	matrix.M12 = 2.0f * (value + z1);
-	matrix.M13 = -2.0f * (value1 - y1);
-	matrix.M14 = 0.0f;
-
-	matrix.M21 = 2.0f * (value - z1);
-	matrix.M22 = 1.0f - 2.0f * (z + x);
-	matrix.M23 = -2.0f * (y2 + x1);
-	matrix.M24 = 0.0f;
-
-	matrix.M31 = 2.0f * (value1 + y1);
-	matrix.M32 = 2.0f * (y2 - x1);
-	matrix.M33 = -(1.0f - 2.0f * (y + x));
-	matrix.M34 = 0.0f;
-
-	matrix.M41 = 0.0f;
-	matrix.M42 = 0.0f;
-	matrix.M43 = 0.0f;
-	matrix.M44 = 1.0f;
-
-	return matrix;
-}
-
-FMatrix FMatrix::CreateFromYawPitchRoll(float InYaw, float InPitch, float InRoll)
-{
-	FQuaternion result;
-	result = FQuaternion::CreateFromYawPitchRoll(InYaw, InPitch, InRoll);
-
-	return CreateFromQuaternion(result);
 }
 
 FMatrix FMatrix::CreateOrthographic(float InWidth, float InHeight, float InNear, float InFar)

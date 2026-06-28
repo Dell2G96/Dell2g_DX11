@@ -36,3 +36,10 @@ struct FSamplingData       // -> register(b2), 16바이트 (uint 2개 + 패딩 2
     UINT Filter;
     UINT Padding[2];
 };
+//////////////////////////////////////////////////////////////////////////////
+struct FVertexTextureNormal
+{
+    FVector Position;
+    FVector2D Uv;
+    FVector Normal;
+};
