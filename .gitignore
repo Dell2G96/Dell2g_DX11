@@ -4,6 +4,7 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 *.tlog
+*.log
 *.obj
 *.idea
 Debug_Dell2g_DX11/

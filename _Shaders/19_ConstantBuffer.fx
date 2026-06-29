@@ -92,6 +92,7 @@ float GetSlopeFactor(float normalY)
 {
     if (normalY < LandscapeData.GentleAngle)
         return 0.0f;
+        
     else if (normalY < LandscapeData.SteepAngle)
         return (normalY - LandscapeData.GentleAngle) / (LandscapeData.SteepAngle - LandscapeData.GentleAngle);
     

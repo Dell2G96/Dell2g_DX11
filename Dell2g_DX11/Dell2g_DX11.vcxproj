@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Debug_$(ProjectName)\</IntDir>
-    <OutDir>$(SolutionDir)$(Configuration)_$(Platform)\ </OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)_$(Platform)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -110,14 +110,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeaderFile>Framework.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include;../_Libraries;./;</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(_ZVcpkgCurrentInstalledDir)include;../_Libraries;./; ../Dell2g_Framework/</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib;$(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib\manual-link;../_Libraries;./;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories);$(SolutionDir)Debug_x64;$(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib;$(_ZVcpkgCurrentInstalledDir)$(_ZVcpkgConfigSubdir)lib\manual-link;../_Libraries;./;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Dell2g_Framework.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -159,81 +160,99 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Buffers\ConstantBuffer.cpp" />
-    <ClCompile Include="Buffers\IndexBuffer.cpp" />
-    <ClCompile Include="Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Demo.cpp" />
     <ClCompile Include="Demo2.cpp" />
     <ClCompile Include="Demo-HLSL.cpp" />
     <ClCompile Include="Demo2-HLSL.cpp" />
-    <ClCompile Include="Enviornment\Landscape.cpp" />
-    <ClCompile Include="Enviornment\Landscape-HLSL.cpp" />
-    <ClCompile Include="Objects\Line3D.cpp" />
-    <ClCompile Include="Renders\SamplerState.cpp" />
-    <ClCompile Include="Systems\HLSLShader.cpp" />
-    <ClCompile Include="Framework.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
+    <ClCompile Include="Main\Main.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <UseDynamicDebugging>false</UseDynamicDebugging>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <EnableVectorLength>NotSet</EnableVectorLength>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>Default</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</ModuleDependenciesFile>
+      <ModuleOutputFile>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>PCH.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\Dell2g_DX11.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\Dell2g_DX11.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>D:\_Atents\_DX Potfolio\DirectX11\Debug_Dell2g_DX11\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>;C:\Users\User\vcpkg\installed\x64-windows\include;../_Libraries;./;./Main;../Dell2g_Framework;;C:\Users\User\vcpkg\installed\x64-windows\include</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
+      <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Maths\Math.cpp" />
-    <ClCompile Include="Maths\Matrix.cpp" />
-    <ClCompile Include="Maths\Plane.cpp" />
-    <ClCompile Include="Maths\Quaternion.cpp" />
-    <ClCompile Include="Maths\Vector.cpp" />
-    <ClCompile Include="Maths\Vector2D.cpp" />
-    <ClCompile Include="Maths\Vector4.cpp" />
-    <ClCompile Include="Renders\Color.cpp" />
-    <ClCompile Include="Renders\Context.cpp" />
-    <ClCompile Include="Renders\Texture2D.cpp" />
-    <ClCompile Include="Systems\D3D.cpp" />
-    <ClCompile Include="Systems\Gui.cpp" />
-    <ClCompile Include="Systems\Keyboard.cpp" />
-    <ClCompile Include="Systems\Mouse.cpp" />
-    <ClCompile Include="Systems\Shader.cpp" />
-    <ClCompile Include="Systems\Timer.cpp" />
-    <ClCompile Include="Systems\Window.cpp" />
-    <ClCompile Include="Utilities\Path.cpp" />
-    <ClCompile Include="Utilities\String.cpp" />
-    <ClCompile Include="Viewer\Camera.cpp" />
+    <ClCompile Include="Main\PCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffers\ConstantBuffer.h" />
-    <ClInclude Include="Buffers\IndexBuffer.h" />
-    <ClInclude Include="Buffers\VertexBuffer.h" />
-    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Demo.h" />
     <ClInclude Include="Demo2.h" />
     <ClInclude Include="Demo-HLSL.h" />
     <ClInclude Include="Demo2-HLSL.h" />
-    <ClInclude Include="Enviornment\Landscape.h" />
-    <ClInclude Include="Enviornment\Landscape-HLSL.h" />
-    <ClInclude Include="Framework.h" />
-    <ClInclude Include="Main.h" />
-    <ClInclude Include="Maths\Math.h" />
-    <ClInclude Include="Maths\Matrix.h" />
-    <ClInclude Include="Maths\Plane.h" />
-    <ClInclude Include="Maths\Quaternion.h" />
-    <ClInclude Include="Maths\Vector.h" />
-    <ClInclude Include="Maths\Vector2D.h" />
-    <ClInclude Include="Maths\Vector4.h" />
-    <ClInclude Include="Objects\Line3D.h" />
-    <ClInclude Include="Renders\Color.h" />
-    <ClInclude Include="Renders\Context.h" />
-    <ClInclude Include="Renders\SamplerState.h" />
-    <ClInclude Include="Renders\Texture2D.h" />
-    <ClInclude Include="Renders\VertexLayout.h" />
-    <ClInclude Include="Systems\D3D.h" />
-    <ClInclude Include="Systems\HLSLShader.h" />
-    <ClInclude Include="Systems\Gui.h" />
-    <ClInclude Include="Systems\IExecutable.h" />
-    <ClInclude Include="Systems\Keyboard.h" />
-    <ClInclude Include="Systems\Mouse.h" />
-    <ClInclude Include="Systems\Shader.h" />
-    <ClInclude Include="Systems\Timer.h" />
-    <ClInclude Include="Systems\Window.h" />
-    <ClInclude Include="Utilities\Path.h" />
-    <ClInclude Include="Utilities\String.h" />
-    <ClInclude Include="Viewer\Camera.h" />
+    <ClInclude Include="Main\Main.h" />
+    <ClInclude Include="Main\PCH.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
