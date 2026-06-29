@@ -55,7 +55,7 @@ void CMain::Push(IExecutable* Inexecutable)
 ///////////////////////////////////////////////////////////////////////////////
 int WINAPI WinMain(HINSTANCE InInstance, HINSTANCE InPreInstance, LPSTR InParam, int InCommand)
 {
-    CWindow* window = new CWindow(L"Dell2g_Game", 1024 , 768 , InInstance);
+    CWindow* window = new CWindow(L"Dell2g_Game", 1620 , 800 , InInstance);
     
     CMain* main = new CMain();
     WPARAM result = window->Run(main);

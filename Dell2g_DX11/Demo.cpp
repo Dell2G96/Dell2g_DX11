@@ -3,7 +3,8 @@
 
 void Demo::Initialize()
 {
-    CContext::Get()->GetCamera()->SetPosition(FVector(0,0.f,-10));
+    CContext::Get()->GetCamera()->SetPosition(FVector(-14,12.f,-15));
+    CContext::Get()->GetCamera()->SetRotation(FVector(7,45.f,0.f));
     
     Landscape = new CLandscape();
     
