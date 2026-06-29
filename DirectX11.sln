@@ -7,6 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dell2g_DX11", "Dell2g_DX11\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dell2g_Framework", "Dell2g_Framework\Dell2g_Framework.vcxproj", "{09098899-02F3-4C3F-B9B0-80EE270655A7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dell2g_ModelEditor", "Dell2g_ModelEditor\Dell2g_ModelEditor.vcxproj", "{0D690A12-4A25-4B33-8AAB-8AA810445A10}"
+	ProjectSection(ProjectDependencies) = postProject
+		{09098899-02F3-4C3F-B9B0-80EE270655A7} = {09098899-02F3-4C3F-B9B0-80EE270655A7}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,5 +36,13 @@ Global
 		{09098899-02F3-4C3F-B9B0-80EE270655A7}.Release|Win32.Build.0 = Release|Win32
 		{09098899-02F3-4C3F-B9B0-80EE270655A7}.Release|x64.ActiveCfg = Release|x64
 		{09098899-02F3-4C3F-B9B0-80EE270655A7}.Release|x64.Build.0 = Release|x64
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Debug|Win32.Build.0 = Debug|Win32
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Debug|x64.ActiveCfg = Debug|x64
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Debug|x64.Build.0 = Debug|x64
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Release|Win32.ActiveCfg = Release|Win32
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Release|Win32.Build.0 = Release|Win32
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Release|x64.ActiveCfg = Release|x64
+		{0D690A12-4A25-4B33-8AAB-8AA810445A10}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 EndGlobal

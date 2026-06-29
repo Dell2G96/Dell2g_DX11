@@ -6,7 +6,7 @@ public:
     CWindow(wstring InAppName, float InWitdh, float InHeight, HINSTANCE InInstance);
     ~CWindow();
     
-    WPARAM Run(class IExecutable* InExecutable);
+    WPARAM Run(class IExecutable* InExecutable, bool bGameLoop = true);
     
 private:
     void MainRender(class IExecutable* InExecutable);

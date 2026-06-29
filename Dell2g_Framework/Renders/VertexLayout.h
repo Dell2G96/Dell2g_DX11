@@ -43,3 +43,10 @@ struct FVertexTextureNormal
     FVector2D Uv;
     FVector Normal;
 };
+//////////////////////////////////////////////////////////////////////////////
+struct FVertexModel
+{
+    FVector Position;
+    FVector2D Uv;
+    FVector Normal;
+};

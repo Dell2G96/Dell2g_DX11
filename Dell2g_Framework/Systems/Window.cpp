@@ -42,12 +42,12 @@ CWindow::~CWindow()
     UnregisterClass(AppName.c_str(), Instance);
 }
 
-WPARAM CWindow::Run(class IExecutable* InExecutable)
+WPARAM CWindow::Run(class IExecutable* InExecutable, bool bGameLoop )
 {
     InExecutable->Initialize();
     
-    MSG msg;
-    while (true)
+    MSG msg = MSG();
+    while (bGameLoop)
     {
         if (PeekMessage(&msg, nullptr, 0 , 0 , PM_REMOVE))
         {

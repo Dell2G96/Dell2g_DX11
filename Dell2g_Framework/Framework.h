@@ -69,6 +69,7 @@ using namespace chrono;
 
 #include "Utilities/Path.h"
 #include "Utilities/String.h"
+#include "Utilities/BinaryFile.h"
 
 #include "Renders/Context.h"
 #include "Renders/VertexLayout.h"

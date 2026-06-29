@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:Console")
+
 #define MAX_KEY_COUNT 256
 #define Check(x) { assert((x) >= 0);}
 

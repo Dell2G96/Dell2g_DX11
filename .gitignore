@@ -8,6 +8,8 @@ riderModule.iml
 *.obj
 *.idea
 Debug_Dell2g_DX11/
+Debug_Dell2g_Framework/
+Debug_Dell2g_ModelEditor/
 Dell2g_Dx11/x64/
 Debug_x64/
 _Docs/
