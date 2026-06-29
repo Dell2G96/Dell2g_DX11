@@ -4,17 +4,19 @@
 
 CLandscape::CLandscape()
 {
-    Shader = new CShader(L"18_Landscape_Layering.fx");
+    Shader = new CShader(L"19_ConstantBuffer.fx");
     
     HeightMap = new CTexture2D(L"Landscape/Height256x256_2.png");
+	
+	CBuffer = new CConstantBuffer(Shader, "CB_Landscape", &Data, sizeof(FDesc));
+	
+	FrameData.World = FMatrix::Identity;
+	CFrameBuffer = new CConstantBuffer(Shader, "CB_Frame", &FrameData, sizeof(FFrameDesc));
     
     CreateVertexData();
     CreateIndexedData();
 	CreateNormalVector();
     CreateBuffer();
-    
-    World = FMatrix::Identity;
-    
 	
 	Textures[0] = new CTexture2D(L"Landscape/BaseMap.png");
 	Textures[1] = new CTexture2D(L"Landscape/LowMap.png");
@@ -50,47 +52,40 @@ CLandscape::~CLandscape()
 
 void CLandscape::Tick()
 {
-	Shader->AsMatrix("World")->SetMatrix(World);
 	
-	FMatrix view =CContext::Get()->GetView();
-	Shader->AsMatrix("View")->SetMatrix(view);
 	
-	FMatrix projection =CContext::Get()->GetProjection();
-	Shader->AsMatrix("Projection")->SetMatrix(projection);
+	FrameData.View =CContext::Get()->GetView();
+	FrameData.Projection =CContext::Get()->GetProjection();
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("Tiling");
 	
-	ImGui::InputFloat("Tiling - X", &Tiling.X, 1.0f);
-	ImGui::InputFloat("Tiling - Y", &Tiling.Y, 1.0f);
-	Shader->AsVector("Tiling")->SetFloatVector(Tiling);
+	ImGui::InputFloat("Tiling - X", &Data.Tiling.X, 1.0f);
+	ImGui::InputFloat("Tiling - Y", &Data.Tiling.Y, 1.0f);
+	Shader->AsVector("Tiling")->SetFloatVector(Data.Tiling);
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("LightDirection");
 	
-	ImGui::SliderFloat3("LightDirection", LightDirection, -1.0f, +1.0f);
-	Shader->AsVector("LightDirection")->SetFloatVector(LightDirection);
+	ImGui::SliderFloat3("LightDirection", Data.LightDirection, -1.0f, +1.0f);
+	Shader->AsVector("LightDirection")->SetFloatVector(Data.LightDirection);
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("Height");
 	
-	Shader->AsScalar("MaxHeight")->SetFloat(MaxHeight);
+	Shader->AsScalar("MaxHeight")->SetFloat(Data.MaxHeight);
 	
-	ImGui::InputFloat("LowRatio", &LowRatio, 0.05f);
-	LowRatio = FMath::Clamp<float>(LowRatio, 0.0f, 0.5f);
-	Shader->AsScalar("LowRatio")->SetFloat(LowRatio);
+	ImGui::InputFloat("LowRatio", &Data.LowRatio, 0.05f);
+	Data.LowRatio = FMath::Clamp<float>(Data.LowRatio, 0.0f, 0.5f);
 	
-	ImGui::InputFloat("HighRatio", &HighRatio, 0.05f);
-	HighRatio = FMath::Clamp<float>(HighRatio, 0.5f, 1.0f);
-	Shader->AsScalar("HighRatio")->SetFloat(HighRatio);
+	ImGui::InputFloat("HighRatio", &Data.HighRatio, 0.05f);
+	Data.HighRatio = FMath::Clamp<float>(Data.HighRatio, 0.5f, 1.0f);
 	
-	ImGui::InputFloat("GentleAngle", &GentleAngle, 0.05f);
-	GentleAngle = FMath::Clamp<float>(GentleAngle, 0.0f, 0.5f);
-	Shader->AsScalar("GentleAngle")->SetFloat(GentleAngle);
+	ImGui::InputFloat("GentleAngle", &Data.GentleAngle, 0.05f);
+	Data.GentleAngle = FMath::Clamp<float>(Data.GentleAngle, 0.0f, 0.5f);
 	
-	ImGui::InputFloat("SteepAngle", &SteepAngle, 0.05f);
-	SteepAngle = FMath::Clamp<float>(SteepAngle, 0.5f, 1.0f);
-	Shader->AsScalar("SteepAngle")->SetFloat(SteepAngle);
+	ImGui::InputFloat("SteepAngle", &Data.SteepAngle, 0.05f);
+	Data.SteepAngle = FMath::Clamp<float>(Data.SteepAngle, 0.5f, 1.0f);
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("Normal");
@@ -114,7 +109,6 @@ void CLandscape::Tick()
 		}
 		Line3D->Tick();	
 	}
-	
 }
 
 void CLandscape::Render()
@@ -127,6 +121,9 @@ void CLandscape::Render()
 	IBuffer->Render();
 	
 	CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	
+	CBuffer->Render();
+	CFrameBuffer->Render();
 	
 	sSRVs->SetResourceArray(SRVs, 0,5);
 	
@@ -153,7 +150,7 @@ void CLandscape::CreateVertexData()
 			UINT index = Width * z + x;
 			
 			Vertices[index].Position.X = (float)x;
-			Vertices[index].Position.Y = pixels[index].R * MaxHeight;
+			Vertices[index].Position.Y = pixels[index].R * Data.MaxHeight;
 			//Vertices[index].Position.Y = -0.1f; // 평평한 버전
 			Vertices[index].Position.Z = (float)z;
 			

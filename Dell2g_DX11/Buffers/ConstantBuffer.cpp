@@ -1,6 +1,47 @@
 #include "Framework.h"
 #include "ConstantBuffer.h"
 
+///////////////////////////////////////////////////////////////////////////////
+/// Effects11 version 
+///////////////////////////////////////////////////////////////////////////////
+CConstantBuffer::CConstantBuffer(CShader* InShader, string InParamName, void* InData, UINT InDataSize)
+    : Shader(InShader), Data(InData),DataSize(InDataSize)
+{
+    sBuffer = Shader->AsConstantBuffer(InParamName);
+    assert(sBuffer != nullptr);
+    
+    D3D11_BUFFER_DESC desc;
+    ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
+    desc.ByteWidth =DataSize;
+    desc.BindFlags =D3D11_BIND_CONSTANT_BUFFER;
+    desc.Usage = D3D11_USAGE_DYNAMIC;
+    desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+    
+    HRESULT hr = CD3D::Get()->GetDevice()->CreateBuffer(&desc, nullptr, &Buffer); // 16byte
+    Check(hr);
+}
+
+void CConstantBuffer::Render()
+{
+    D3D11_MAPPED_SUBRESOURCE subresource;
+    
+    HRESULT hr = CD3D::Get()->GetDeviceContext()->Map(Buffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &subresource);
+    {
+        memcpy_s(subresource.pData, DataSize, Data, DataSize);
+    }
+    CD3D::Get()->GetDeviceContext()->Unmap(Buffer, 0);
+    
+    sBuffer->SetConstantBuffer(Buffer);
+}
+
+CConstantBuffer::~CConstantBuffer()
+{
+    Release(Buffer);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/// HLSL Version
+///////////////////////////////////////////////////////////////////////////////
 CConstantBuffer::CConstantBuffer(void* InData, UINT InDataSize)
     : Data(InData), DataSize(InDataSize)
 {
@@ -20,11 +61,6 @@ CConstantBuffer::CConstantBuffer(void* InData, UINT InDataSize)
     // 초기 데이터 없이 빈 버퍼만 생성 (값은 Update()에서 채운다)
     HRESULT hr = CD3D::Get()->GetDevice()->CreateBuffer(&desc, nullptr, &Buffer);
     Check(hr);
-}
-
-CConstantBuffer::~CConstantBuffer()
-{
-    Release(Buffer);
 }
 
 void CConstantBuffer::Update()

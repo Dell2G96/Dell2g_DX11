@@ -16,11 +16,13 @@ public:
     CConstantBuffer(
         void* InData,       // InData     : CPU 측 데이터 구조체의 주소 (예: &WorldData)
         UINT InDataSize);   // InDataSize : 그 구조체의 바이트 크기 (반드시 16의 배수여야 함)
+    CConstantBuffer(CShader* InShader, string InParamName, void* InData, UINT InDataSize);
     ~CConstantBuffer();
 
 public:
     // CPU의 Data 내용을 GPU 버퍼로 복사한다. (값이 바뀔 때마다 호출)
     void Update();
+    void Render();
 
     // 이 상수 버퍼를 정점 셰이더 / 픽셀 셰이더의 bN 슬롯에 연결한다.
     void BindToVS(UINT InSlot);
@@ -28,7 +30,9 @@ public:
 
 private:
     ID3D11Buffer* Buffer = nullptr;
-
+    ID3DX11EffectConstantBuffer* sBuffer;
+    
+    CShader* Shader;
     void* Data;     // CPU 측 원본 데이터 주소 (소유하지 않음)
     UINT  DataSize; // 바이트 크기
 };
