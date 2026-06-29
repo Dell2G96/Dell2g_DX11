@@ -7,6 +7,8 @@ riderModule.iml
 *.log
 *.obj
 *.idea
+*.fbx
+_Assets/
 Debug_Dell2g_DX11/
 Debug_Dell2g_Framework/
 Debug_Dell2g_ModelEditor/
