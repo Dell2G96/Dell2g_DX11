@@ -52,10 +52,10 @@ CLandscape::~CLandscape()
 
 void CLandscape::Tick()
 {
-	
-	
 	FrameData.View =CContext::Get()->GetView();
 	FrameData.Projection =CContext::Get()->GetProjection();
+	
+	Data.LightDirection = CContext::Get()->GetLightDirection();
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("Tiling");
@@ -64,11 +64,6 @@ void CLandscape::Tick()
 	ImGui::InputFloat("Tiling - Y", &Data.Tiling.Y, 1.0f);
 	Shader->AsVector("Tiling")->SetFloatVector(Data.Tiling);
 	
-	ImGui::Separator();
-	ImGui::SeparatorText("LightDirection");
-	
-	ImGui::SliderFloat3("LightDirection", Data.LightDirection, -1.0f, +1.0f);
-	Shader->AsVector("LightDirection")->SetFloatVector(Data.LightDirection);
 	
 	ImGui::Separator();
 	ImGui::SeparatorText("Height");

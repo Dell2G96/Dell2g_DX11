@@ -88,6 +88,10 @@ void CContext::Tick()
 
         Camera->SetRotation(rotation);
     }
+    ImGui::Separator();
+    ImGui::SeparatorText("LightDirection");
+	
+    ImGui::SliderFloat3("LightDirection", LightDirection, -1.0f, +1.0f);
 }
 
 void CContext::Render()

@@ -167,6 +167,8 @@
     <ClCompile Include="Buffers\VertexBuffer.cpp" />
     <ClCompile Include="Enviornment\Landscape.cpp" />
     <ClCompile Include="Enviornment\Landscape-HLSL.cpp" />
+    <ClCompile Include="Models\MeshRenderer.cpp" />
+    <ClCompile Include="Models\ModelMesh.cpp" />
     <ClCompile Include="Objects\Line3D.cpp" />
     <ClCompile Include="Renders\SamplerState.cpp" />
     <ClCompile Include="Systems\HLSLShader.cpp" />
@@ -210,6 +212,8 @@
     <ClInclude Include="Maths\Vector.h" />
     <ClInclude Include="Maths\Vector2D.h" />
     <ClInclude Include="Maths\Vector4.h" />
+    <ClInclude Include="Models\MeshRenderer.h" />
+    <ClInclude Include="Models\ModelMesh.h" />
     <ClInclude Include="Objects\Line3D.h" />
     <ClInclude Include="Renders\Color.h" />
     <ClInclude Include="Renders\Context.h" />

@@ -39,6 +39,8 @@ public:
 public:
     void SetCameraMoveSpeed(float InValue) { CameraMoveSpeed = InValue;}
     void SetCameraRotaionSpeed(float InValue) { CameraRotationSpeed = InValue;}
+    
+    FVector& GetLightDirection() {return LightDirection;}
 private:
     float CameraMoveSpeed = 5.f;
     float CameraRotationSpeed = 200.f;
@@ -48,6 +50,8 @@ private:
     
     FMatrix Projection;
     D3D11_VIEWPORT* Viewport;
+    
+    FVector LightDirection = FVector(-1.0f, -1.f, +1.f);
     
     
     

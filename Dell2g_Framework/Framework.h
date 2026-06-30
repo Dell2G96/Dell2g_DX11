@@ -76,6 +76,10 @@ using namespace chrono;
 #include "Renders/Texture2D.h"
 #include "Renders/SamplerState.h"
 
+#include "Models/MeshRenderer.h"
+#include "Models/ModelMesh.h"
+
+
 #include "Objects/Line3D.h"
 
 #include "Enviornment/Landscape.h"
