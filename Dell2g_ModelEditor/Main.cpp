@@ -14,7 +14,7 @@ void CMain::Initialize()
     // Cylinder();
     // Sphere();
     // Torus(); 
-    ReadModel(L"BlackPanther");
+    ReadModel(L"Ittan_momen");
     
     MessageBox(CD3D::Get()->GetHandle(), L"변환 완료", L"Message", MB_OK);       
 }
@@ -22,7 +22,9 @@ void CMain::Initialize()
 void CMain::ReadModel(wstring InName)
 {
     CConverter* converter = new CConverter();
-    converter->ReadFile(InName+L".fbx");
+    wstring s = InName + L"/";
+    converter->ReadFile(s + InName +L".fbx");
+    converter->ExportMaterial(InName);
     converter->ExportMesh(InName);
     Delete(converter);
 }

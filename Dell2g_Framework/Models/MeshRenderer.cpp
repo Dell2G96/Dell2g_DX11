@@ -6,8 +6,28 @@ CMeshRenderer::CMeshRenderer(CShader* InShader)
 {
 }
 
+CMeshRenderer::CMeshRenderer(CHLSLShader* InShader)
+    :HLSLShader(InShader)
+{
+    FrameData.World = FMatrix::Identity;
+    FrameData.View = FMatrix::Identity;
+    FrameData.Projection = FMatrix::Identity;
+    LightData.LightDirection = FVector(1.0f, 0.0f, 0.0f);
+    
+    FrameBuffer = new CConstantBuffer(&FrameData, sizeof(FFrameDesc));
+    LightBuffer = new CConstantBuffer(&LightData, sizeof(FLightDesc));
+}
+
 CMeshRenderer::~CMeshRenderer()
 {
+    for (CModelMesh* mesh : Meshes)
+        Delete(mesh);
+    
+    for (pair<string, CMaterial*> material : MaterialTable)
+        Delete(material.second);
+    
+    Delete(FrameBuffer);
+    Delete(LightBuffer);
 }
 
 void CMeshRenderer::Tick()
@@ -35,6 +55,96 @@ void CMeshRenderer::Render()
     
 }
 
+void CMeshRenderer::RenderHLSL()
+{
+    FrameData.View = CContext::Get()->GetView();
+    FrameData.Projection = CContext::Get()->GetProjection();
+    LightData.LightDirection = CContext::Get()->GetLightDirection();
+    
+    FrameBuffer->Update();
+    FrameBuffer->BindToVS(0);
+    
+    LightBuffer->Update();
+    LightBuffer->BindToPS(2);
+    
+    HLSLShader->Render();
+    
+    for (CModelMesh* mesh : Meshes)
+    {
+        mesh->RenderHLSL();
+    }
+}
+
+void CMeshRenderer::ReadMaterial(wstring InFile)
+{
+    InFile = L"../_Materials/" + InFile + L".material";
+    
+    ifstream stream;
+    stream.open(InFile);
+    assert(stream.is_open() && "Material file open failed");
+    
+    Json::Value root;
+    stream >> root;
+    stream.close();
+    
+    Json::Value::Members members = root.getMemberNames();
+    for (string name : members)
+    {
+        CMaterial* material = new CMaterial(Shader);
+        Json::Value value = root[name];
+        
+        if (value["00_Draw"].asBool() == false)
+            material->OffDraw();
+        else
+            material->OnDraw();
+        
+        material->SetDiffuse(CString::FromColor(value["11_Diffuse"].asString()));
+        
+        string file;
+        file = value["20_DiffuseMap"].asString();
+        if (file.size() > 0)
+            material->SetDiffuseMap(CString::ToWString(file), false);
+        material->SetTiling(CString::FromVector2D(value["30_Tiling"].asString()));
+        
+        MaterialTable[name] = material;
+    }
+}
+
+void CMeshRenderer::ReadMaterialHLSL(wstring InFile)
+{
+    InFile = L"../_Materials/" + InFile + L".material";
+    
+    ifstream stream;
+    stream.open(InFile);
+    assert(stream.is_open() && "Material file open failed");
+    
+    Json::Value root;
+    stream >> root;
+    stream.close();
+    
+    Json::Value::Members members = root.getMemberNames();
+    for (string name : members)
+    {
+        CMaterial* material = new CMaterial(HLSLShader);
+        Json::Value value = root[name];
+        
+        if (value["00_Draw"].asBool() == false)
+            material->OffDraw();
+        else
+            material->OnDraw();
+        
+        material->SetDiffuse(CString::FromColor(value["11_Diffuse"].asString()));
+        
+        string file = value["20_DiffuseMap"].asString();
+        if (file.size() > 0)
+            material->SetDiffuseMap(CString::ToWString(file), false);
+        
+        material->SetTiling(CString::FromVector2D(value["30_Tiling"].asString()));
+        
+        MaterialTable[name] = material;
+    }
+}
+
 void CMeshRenderer::ReadMesh(wstring InFile)
 {
     InFile = L"../_Models/" + InFile +L".mesh";
@@ -44,9 +154,14 @@ void CMeshRenderer::ReadMesh(wstring InFile)
     UINT count = r->FromUINT();
     for (int i =0; i < count; i++)
     {
-        CModelMesh* mesh = new CModelMesh(Shader);
+        CModelMesh* mesh = Shader != nullptr ? new CModelMesh(Shader) : new CModelMesh(HLSLShader);
         
         mesh->Name = r->FromString();
+        mesh->MaterialName = r->FromString();
+        
+        map<string, CMaterial*>::iterator material = MaterialTable.find(mesh->MaterialName);
+        if (material != MaterialTable.end())
+            mesh->Material = material->second;
         
         mesh->MinPoint = r->FromVector();
         mesh->MaxPoint = r->FromVector();
@@ -66,6 +181,11 @@ void CMeshRenderer::ReadMesh(wstring InFile)
     }
     r->Close();
     Delete(r);
+}
+
+void CMeshRenderer::SetWorld(FMatrix InWorld)
+{
+    FrameData.World = InWorld;
 }
 
 FVector CMeshRenderer::GetSize(UINT InIndex)

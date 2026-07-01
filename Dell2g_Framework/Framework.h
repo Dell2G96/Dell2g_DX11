@@ -5,6 +5,7 @@
 
 #include <string>
 #include <bitset>
+#include <fstream>
 using namespace  std;
 
 // 날짜 , 현재 시간 표시하기 위해서 추가
@@ -41,6 +42,12 @@ using namespace chrono;
 # pragma comment(lib, DirectXTex.lib)
 
 
+//json
+#include <json/Json.h>
+#pragma comment(lib, Jsoncpp_static.lib)
+
+
+
 #include "Definitions.h"
 
 #include "Maths/Vector2D.h"
@@ -75,6 +82,8 @@ using namespace chrono;
 #include "Renders/VertexLayout.h"
 #include "Renders/Texture2D.h"
 #include "Renders/SamplerState.h"
+#include "Renders/Material.h"
+
 
 #include "Models/MeshRenderer.h"
 #include "Models/ModelMesh.h"

@@ -8,15 +8,21 @@ void Demo::Initialize()
     
     Landscape = new CLandscape();
     
-    Shader = new CShader(L"20_Meshrenderer.fx");
+    Shader = new CShader(L"21_Material-Texture.fx");
     
-    MeshRender = new CMeshRenderer(Shader);
-    MeshRender->ReadMesh(names);
-    // for (int i =0; i < 7; i++)
-    // {
-    //     MeshRenderers[i] = new CMeshRenderer(Shader);
-    //     MeshRenderers[i]->ReadMesh(names[i]);
-    // }
+    
+    // 1개 모델 불러올 때
+    // MeshRender = new CMeshRenderer(Shader);
+    // MeshRender->ReadMaterial(names);
+    // MeshRender->ReadMesh(names);
+    
+    
+    for (int i =0; i < 2; i++)
+    {
+        MeshRenderers[i] = new CMeshRenderer(Shader);
+        MeshRenderers[i]->ReadMaterial(names[i]);
+        MeshRenderers[i]->ReadMesh(names[i]);
+    }
     
     
 }
@@ -25,9 +31,10 @@ void Demo::Destroy()
 {
     Delete(Landscape);
     
-    Delete(MeshRender);
-    // for (int i =0; i < 7; i++)
-    //     Delete(MeshRenderers[i]);
+    //Delete(MeshRender);
+    
+    for (int i =0; i < 2; i++)
+        Delete(MeshRenderers[i]);
 }
 
 void Demo::Tick()
@@ -39,10 +46,11 @@ void Demo::Tick()
 #pragma endregion
 
     Landscape->Tick();
-    // for (int i =0; i < 7; i++)
-    //     MeshRenderers[i]->Tick();
     
-    MeshRender->Tick();
+    for (int i =0; i < 2; i++)
+        MeshRenderers[i]->Tick();
+    
+    //MeshRender->Tick();
     
 }
 
@@ -50,25 +58,44 @@ void Demo::Render()
 {
    Landscape->Render();
    
-    FVector position = FVector(5.f,0.f,1.f);
-    position.Y = MeshRender->GetExtent().Y;
-    
-    FMatrix rotation = FMatrix::CreateRotationX(FMath::Pi * 0.5f);
-    FMatrix translation = FMatrix::CreateTranslation(position);
     
     
-    FMatrix world = rotation * translation;
-    Shader->AsMatrix("World")->SetMatrix(world);
     
-    MeshRender->Render();
-    // for (int i =0; i < 7; i++)
-    // {
-    //     FVector position = FVector((float)i * 1.5f, 0.f,(float)i* 1.5f);
-    //     position.Y = MeshRenderers[i]->GetExtent().Y;
-    //     
-    //     FMatrix world = FMatrix::CreateTranslation(position);
-    //     Shader->AsMatrix("World")->SetMatrix(world);
-    //     
-    //     MeshRenderers[i]->Render();
-    // }
+    // 여러개 모델 불러올 때
+    for (int i =0; i < 2; i++)
+    {
+        FVector position = FVector((float)i * 1.5f, 0.f,(float)i* 1.5f);
+        position.Y = MeshRenderers[i]->GetExtent().Y;
+
+        if (i == 0)
+        {
+            position = FVector(0.f,0.f,1.f);
+            position.Y = MeshRenderers[0]->GetExtent().Y;
+            
+            FMatrix rotation = FMatrix::CreateRotationX(FMath::Pi * 0.5f);
+            FMatrix translation = FMatrix::CreateTranslation(position);
+    
+    
+            FMatrix world = rotation * translation;
+            Shader->AsMatrix("World")->SetMatrix(world);
+    
+            MeshRenderers[0]->Render();
+            continue;
+        }
+        if (i == 1)
+        {
+               float scaleValue = 10.f;
+            FMatrix scale = FMatrix::CreateScale(scaleValue);
+            
+            FMatrix translation = FMatrix::CreateTranslation(position);
+            
+            FMatrix world = scale * translation;
+            Shader->AsMatrix("World")->SetMatrix(world);
+            
+        }
+        
+        
+        
+        MeshRenderers[i]->Render();
+    }
 }

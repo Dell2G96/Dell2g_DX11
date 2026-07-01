@@ -37,6 +37,7 @@ public:
     ~CTexture2D();
     
     void Render();
+    void BindToPS(UINT InSlot);
 public:
     operator ID3D11ShaderResourceView* ();
     

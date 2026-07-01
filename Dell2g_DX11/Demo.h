@@ -16,18 +16,17 @@ private:
 private:
     CShader* Shader;
 
-    const wstring names = L"BlackPanther";
-    CMeshRenderer* MeshRender;
-    // const wstring names[7]=
-    //     {
-    //     L"Arrow",
-    //     L"Capsule",
-    //     L"Cone",
-    //     L"Cube",
-    //     L"Cylinder",
-    //     L"Sphere",
-    //     L"Torus"
-    // };
-    //CMeshRenderer* MeshRenderers[7];
+    // 1개 모델만 불러올 때
+    //const wstring names = L"BlackPanther";
+    //CMeshRenderer* MeshRender;
+    
+    
+    // 여러개 모델 불러올 떄
+     const wstring names[2]=
+         {
+         L"BlackPanther",
+         L"Ittan_momen"
+     };
+    CMeshRenderer* MeshRenderers[2];
     
 };

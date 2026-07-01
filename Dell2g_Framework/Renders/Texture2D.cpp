@@ -98,6 +98,11 @@ void CTexture2D::Render()
     sSRV->SetResource(SRV);
 }
 
+void CTexture2D::BindToPS(UINT InSlot)
+{
+    CD3D::Get()->GetDeviceContext()->PSSetShaderResources(InSlot, 1, &SRV);
+}
+
 CTexture2D::operator struct ID3D11ShaderResourceView*()
 {
     return SRV;

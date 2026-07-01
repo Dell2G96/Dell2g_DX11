@@ -170,6 +170,7 @@
     <ClCompile Include="Models\MeshRenderer.cpp" />
     <ClCompile Include="Models\ModelMesh.cpp" />
     <ClCompile Include="Objects\Line3D.cpp" />
+    <ClCompile Include="Renders\Material.cpp" />
     <ClCompile Include="Renders\SamplerState.cpp" />
     <ClCompile Include="Systems\HLSLShader.cpp" />
     <ClCompile Include="Framework.cpp">
@@ -217,6 +218,7 @@
     <ClInclude Include="Objects\Line3D.h" />
     <ClInclude Include="Renders\Color.h" />
     <ClInclude Include="Renders\Context.h" />
+    <ClInclude Include="Renders\Material.h" />
     <ClInclude Include="Renders\SamplerState.h" />
     <ClInclude Include="Renders\Texture2D.h" />
     <ClInclude Include="Renders\VertexLayout.h" />

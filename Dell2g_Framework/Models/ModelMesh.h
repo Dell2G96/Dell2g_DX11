@@ -7,10 +7,12 @@ private:
     
 private:
     CModelMesh(CShader* InShader);
+    CModelMesh(CHLSLShader* InShader);
     ~CModelMesh();
     
     void Tick();
     void Render();
+    void RenderHLSL();
     
 private:
     void CreateBuffer();
@@ -19,9 +21,12 @@ private:
     FVector GetExtent();
     
 private:
-    CShader* Shader;
+    CShader* Shader = nullptr;
+    CHLSLShader* HLSLShader = nullptr;
     
     string Name;
+    string MaterialName;
+    CMaterial* Material = nullptr;
     
     FVector MinPoint;
     FVector MaxPoint;

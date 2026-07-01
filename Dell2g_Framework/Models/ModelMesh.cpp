@@ -6,6 +6,11 @@ CModelMesh::CModelMesh(CShader* InShader)
 {
 }
 
+CModelMesh::CModelMesh(CHLSLShader* InShader)
+    :HLSLShader(InShader)
+{
+}
+
 CModelMesh::~CModelMesh()
 {
     DeleteArray(Vertices);
@@ -21,12 +26,37 @@ void CModelMesh::Tick()
 
 void CModelMesh::Render()
 {
+    if (Material != nullptr)
+    {
+        if (Material->GetDraw() == false)
+            return;
+        
+        Material->Render();
+    }
+    
     VBuffer->Render();
     IBuffer->Render();
     
     CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     
     Shader->DrawIndexed(ICount);
+}
+
+void CModelMesh::RenderHLSL()
+{
+    if (Material != nullptr)
+    {
+        if (Material->GetDraw() == false)
+            return;
+        
+        Material->RenderHLSL();
+    }
+    
+    VBuffer->Render();
+    IBuffer->Render();
+    
+    CD3D::Get()->GetDeviceContext()->IASetPrimitiveTopology(D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    CD3D::Get()->GetDeviceContext()->DrawIndexed(ICount, 0, 0);
 }
 
 void CModelMesh::CreateBuffer()

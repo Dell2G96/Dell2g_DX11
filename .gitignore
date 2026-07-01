@@ -3,6 +3,18 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+_Assets/
+_Docs/
+_Models/
+_Materials/
+_Materials/
+
+Debug_Dell2g_DX11/
+Debug_Dell2g_Framework/
+Debug_Dell2g_ModelEditor/
+Dell2g_Dx11/x64/
+Debug_x64/
+
 *.tlog
 *.log
 *.obj
@@ -13,15 +25,10 @@ riderModule.iml
 *.lib
 *.pch
 *.pdb
-_Assets/
-Debug_Dell2g_DX11/
-Debug_Dell2g_Framework/
-Debug_Dell2g_ModelEditor/
-Dell2g_Dx11/x64/
-Debug_x64/
-_Assets/
-_Docs/
 *.md
+
+
+
 
 
 
